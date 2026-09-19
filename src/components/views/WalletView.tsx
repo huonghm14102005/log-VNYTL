@@ -12,6 +12,8 @@ import {
   Download,
   PlusCircle,
   CreditCard,
+  ChevronDown,
+  ArrowRight,
 } from "lucide-react";
 
 export const WalletView: React.FC = () => {
@@ -67,9 +69,10 @@ export const WalletView: React.FC = () => {
           </h3>
           <button
             onClick={() => showToast("Đã gửi yêu cầu rút tiền về STK BIDV ****8942 thành công!")}
-            className="text-xs font-bold text-blue-600 hover:underline mt-2 block"
+            className="text-xs font-bold text-blue-600 hover:underline mt-2 flex items-center gap-1"
           >
-            Yêu cầu rút tiền về ngân hàng ➔
+            <span>Yêu cầu rút tiền về ngân hàng</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
@@ -91,7 +94,10 @@ export const WalletView: React.FC = () => {
         <div className="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-slate-800">Biểu đồ thu nhập</h3>
-            <span className="text-xs text-slate-400 font-semibold">Theo ngày ▾</span>
+            <span className="text-xs text-slate-400 font-semibold flex items-center gap-1">
+              Theo ngày
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+            </span>
           </div>
 
           {/* Bar Chart Simulation matching image1.png */}
@@ -138,7 +144,11 @@ export const WalletView: React.FC = () => {
                   <td className="py-3 font-medium text-slate-500">18/09</td>
                   <td className="py-3 font-semibold text-slate-900">
                     Chuyến #FT202609180023
-                    <span className="block text-[10px] font-normal text-slate-400">Hải Phòng ➔ Hà Nội (8 tấn)</span>
+                    <span className="flex items-center gap-1 text-[10px] font-normal text-slate-400">
+                      <span>Hải Phòng</span>
+                      <ArrowRight className="w-2.5 h-2.5 inline text-slate-400" />
+                      <span>Hà Nội (8 tấn)</span>
+                    </span>
                   </td>
                   <td className="py-3 text-right font-extrabold text-blue-600">3.500.000đ</td>
                   <td className="py-3 text-right">
@@ -152,7 +162,11 @@ export const WalletView: React.FC = () => {
                   <td className="py-3 font-medium text-slate-500">17/09</td>
                   <td className="py-3 font-semibold text-slate-900">
                     Chuyến #FT202609170018
-                    <span className="block text-[10px] font-normal text-slate-400">Bắc Ninh ➔ Hải Phòng (12 tấn)</span>
+                    <span className="flex items-center gap-1 text-[10px] font-normal text-slate-400">
+                      <span>Bắc Ninh</span>
+                      <ArrowRight className="w-2.5 h-2.5 inline text-slate-400" />
+                      <span>Hải Phòng (12 tấn)</span>
+                    </span>
                   </td>
                   <td className="py-3 text-right font-extrabold text-blue-600">4.200.000đ</td>
                   <td className="py-3 text-right">
@@ -166,7 +180,11 @@ export const WalletView: React.FC = () => {
                   <td className="py-3 font-medium text-slate-500">16/09</td>
                   <td className="py-3 font-semibold text-slate-900">
                     Chuyến #FT202609160012
-                    <span className="block text-[10px] font-normal text-slate-400">Quảng Ninh ➔ Hải Phòng (5 tấn)</span>
+                    <span className="flex items-center gap-1 text-[10px] font-normal text-slate-400">
+                      <span>Quảng Ninh</span>
+                      <ArrowRight className="w-2.5 h-2.5 inline text-slate-400" />
+                      <span>Hải Phòng (5 tấn)</span>
+                    </span>
                   </td>
                   <td className="py-3 text-right font-extrabold text-blue-600">2.100.000đ</td>
                   <td className="py-3 text-right">
@@ -180,7 +198,11 @@ export const WalletView: React.FC = () => {
                   <td className="py-3 font-medium text-slate-500">15/09</td>
                   <td className="py-3 font-semibold text-slate-900">
                     Chuyến #FT202609150008
-                    <span className="block text-[10px] font-normal text-slate-400">Hà Nam ➔ Hà Nội</span>
+                    <span className="flex items-center gap-1 text-[10px] font-normal text-slate-400">
+                      <span>Hà Nam</span>
+                      <ArrowRight className="w-2.5 h-2.5 inline text-slate-400" />
+                      <span>Hà Nội</span>
+                    </span>
                   </td>
                   <td className="py-3 text-right font-extrabold text-blue-600">3.800.000đ</td>
                   <td className="py-3 text-right">

@@ -2,7 +2,12 @@
 
 import React from "react";
 import { useApp } from "@/context/AppContext";
-import { Search, Bell, ShieldCheck, UserCheck, Truck, Package } from "lucide-react";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
+import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
+import VerifiedUserRoundedIcon from "@mui/icons-material/VerifiedUserRounded";
+import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
+import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 
 export const Header: React.FC = () => {
   const { role, setRole, driver, shipper, setActiveTab } = useApp();
@@ -13,7 +18,7 @@ export const Header: React.FC = () => {
     <header className="h-16 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
       {/* Search Bar matching image1.png */}
       <div className="flex-1 max-w-md relative">
-        <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <SearchRoundedIcon className="!w-4 !h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
         <input
           type="text"
           placeholder="Tìm kiếm chuyến hàng, địa điểm, biển số xe..."
@@ -35,7 +40,7 @@ export const Header: React.FC = () => {
               : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <Truck className="w-3.5 h-3.5" />
+          <LocalShippingRoundedIcon className="!w-4 !h-4" />
           Tài Xế (Driver)
         </button>
 
@@ -50,7 +55,7 @@ export const Header: React.FC = () => {
               : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <Package className="w-3.5 h-3.5" />
+          <Inventory2RoundedIcon className="!w-4 !h-4" />
           Chủ Hàng (Shipper)
         </button>
 
@@ -65,7 +70,7 @@ export const Header: React.FC = () => {
               : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <ShieldCheck className="w-3.5 h-3.5" />
+          <AdminPanelSettingsRoundedIcon className="!w-4 !h-4" />
           Quản Trị (Admin)
         </button>
       </div>
@@ -74,7 +79,7 @@ export const Header: React.FC = () => {
       <div className="flex items-center gap-3">
         {/* Notification Bell */}
         <button className="relative p-2 rounded-xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all">
-          <Bell className="w-5 h-5" />
+          <NotificationsRoundedIcon className="!w-5 !h-5" />
           <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
         </button>
 
@@ -90,7 +95,7 @@ export const Header: React.FC = () => {
           <div className="hidden sm:block text-left">
             <p className="text-sm font-semibold text-slate-800 leading-tight flex items-center gap-1">
               {currentUser.fullName}
-              <UserCheck className="w-3.5 h-3.5 text-emerald-500 inline" />
+              <VerifiedUserRoundedIcon className="!w-4 !h-4 text-emerald-500 inline" />
             </p>
             <p className="text-xs text-slate-500 font-medium">
               {role === "DRIVER" ? "Tài xế chuyên tuyến" : "Chủ hàng Doanh nghiệp"}

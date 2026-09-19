@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Bell, Lock, HelpCircle, FileText, ChevronRight, ShieldCheck } from "lucide-react";
+import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
+import LockRoundedIcon from "@mui/icons-material/LockRounded";
+import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
 export const SettingsView: React.FC = () => {
   const [notifyNewTrip, setNotifyNewTrip] = useState(true);
@@ -18,7 +21,7 @@ export const SettingsView: React.FC = () => {
       {/* Thông báo matching Screen 9 in image1.png */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
         <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
-          <Bell className="w-4 h-4 text-blue-600" />
+          <NotificationsRoundedIcon className="!w-5 !h-5 text-blue-600" />
           Cài đặt Thông báo
         </h3>
 
@@ -58,35 +61,35 @@ export const SettingsView: React.FC = () => {
       {/* Bảo mật matching Screen 9 in image1.png */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
         <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
-          <Lock className="w-4 h-4 text-blue-600" />
+          <LockRoundedIcon className="!w-5 !h-5 text-blue-600" />
           Bảo mật
         </h3>
 
         <button className="w-full flex items-center justify-between text-xs font-semibold text-slate-700 hover:text-blue-600 py-2 transition-colors">
           <span>Đổi mật khẩu</span>
-          <ChevronRight className="w-4 h-4 text-slate-400" />
+          <ChevronRightRoundedIcon className="!w-4 !h-4 text-slate-400" />
         </button>
       </div>
 
       {/* Hỗ trợ matching Screen 9 in image1.png */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
         <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
-          <HelpCircle className="w-4 h-4 text-blue-600" />
+          <HelpOutlineRoundedIcon className="!w-5 !h-5 text-blue-600" />
           Hỗ trợ & Pháp lý
         </h3>
 
         <div className="divide-y divide-slate-100 text-xs font-semibold text-slate-700">
           <button className="w-full flex items-center justify-between py-2.5 hover:text-blue-600">
             <span>Trung tâm trợ giúp (FAQ)</span>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <ChevronRightRoundedIcon className="!w-4 !h-4 text-slate-400" />
           </button>
           <button className="w-full flex items-center justify-between py-2.5 hover:text-blue-600">
             <span>Liên hệ đường dây nóng hỗ trợ 24/7 (Hotline 1900 6868)</span>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <ChevronRightRoundedIcon className="!w-4 !h-4 text-slate-400" />
           </button>
           <button className="w-full flex items-center justify-between py-2.5 hover:text-blue-600">
             <span>Điều khoản sử dụng & Quy chế bảo vệ giao dịch Escrow</span>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <ChevronRightRoundedIcon className="!w-4 !h-4 text-slate-400" />
           </button>
         </div>
       </div>

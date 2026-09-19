@@ -11,6 +11,7 @@ import {
   MapPin,
   ChevronRight,
   ArrowUpRight,
+  ArrowRight,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
@@ -144,9 +145,11 @@ export const DashboardView: React.FC = () => {
                       <Truck className="w-6 h-6" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        {order.originCity} ➔ {order.destCity}
-                        <span className="text-xs font-normal text-slate-500">
+                      <h4 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                        <span>{order.originCity}</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-blue-600 inline shrink-0" />
+                        <span>{order.destCity}</span>
+                        <span className="text-xs font-normal text-slate-500 ml-1">
                           ({order.distanceKm} km)
                         </span>
                       </h4>
@@ -173,9 +176,10 @@ export const DashboardView: React.FC = () => {
                         setSelectedOrder(order);
                         setActiveTab("map");
                       }}
-                      className="text-xs font-bold text-blue-600 hover:underline mt-1"
+                      className="text-xs font-bold text-blue-600 hover:underline mt-1 flex items-center gap-1"
                     >
-                      Bản đồ trực tiếp ➔
+                      <span>Bản đồ trực tiếp</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -238,9 +242,10 @@ export const DashboardView: React.FC = () => {
 
           <button
             onClick={() => setActiveTab("wallet")}
-            className="w-full mt-4 py-2.5 text-center text-xs font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+            className="w-full mt-4 py-2.5 text-center text-xs font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-all flex items-center justify-center gap-1.5"
           >
-            Xem bảng đối soát dòng tiền Escrow ➔
+            <span>Xem bảng đối soát dòng tiền Escrow</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>

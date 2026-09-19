@@ -139,7 +139,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: `tx-${Date.now()}`,
           type: "DEPOSIT_LOCK",
           amount: -targetOrder.requiredDeposit,
-          description: `Khóa cọc nhận đơn ${targetOrder.orderCode} (${targetOrder.originCity} ➔ ${targetOrder.destCity})`,
+          description: `Khóa cọc nhận đơn ${targetOrder.orderCode} (${targetOrder.originCity} → ${targetOrder.destCity})`,
           date: "Vừa xong",
           status: "COMPLETED",
         },

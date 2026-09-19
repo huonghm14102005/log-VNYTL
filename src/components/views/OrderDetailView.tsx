@@ -16,6 +16,9 @@ import {
   AlertCircle,
   MessageSquare,
   Lock,
+  Scale,
+  Star,
+  ArrowRight,
 } from "lucide-react";
 
 export const OrderDetailView: React.FC = () => {
@@ -117,7 +120,7 @@ export const OrderDetailView: React.FC = () => {
 
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center gap-1.5">
-                  ⚖️ Trọng lượng:
+                  <Scale className="w-4 h-4 text-slate-400" /> Trọng lượng:
                 </span>
                 <span className="font-bold text-slate-800">
                   {order.cargoWeightKg.toLocaleString()} kg ({order.cargoWeightKg / 1000} tấn)
@@ -170,8 +173,10 @@ export const OrderDetailView: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs font-extrabold text-slate-900">{order.shipperName}</p>
-                  <p className="text-[11px] text-slate-500">
-                    Đánh giá: ⭐ {order.shipperRating} / 5.0
+                  <p className="text-[11px] text-slate-500 flex items-center gap-1">
+                    <span>Đánh giá:</span>
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 inline" />
+                    <span>{order.shipperRating} / 5.0</span>
                   </p>
                 </div>
               </div>
@@ -205,8 +210,10 @@ export const OrderDetailView: React.FC = () => {
           <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
           <div className="space-y-0.5">
             <p className="font-bold">Cơ chế Bảo đảm Ký quỹ Escrow hai chiều (VYLT 2026):</p>
-            <p className="text-emerald-700 leading-relaxed">
-              Tài xế cọc 10% giá trị hàng ({formatVND(order.requiredDeposit)}) ➔ Chủ hàng nộp 100% cước vào Escrow trong 30 phút. Hai bên chỉ thấy SĐT khi tiền đã được khóa an toàn!
+            <p className="text-emerald-700 leading-relaxed flex flex-wrap items-center gap-1">
+              <span>Tài xế cọc 10% giá trị hàng ({formatVND(order.requiredDeposit)})</span>
+              <ArrowRight className="w-3.5 h-3.5 inline text-emerald-800 shrink-0" />
+              <span>Chủ hàng nộp 100% cước vào Escrow trong 30 phút. Hai bên chỉ thấy SĐT khi tiền đã được khóa an toàn!</span>
             </p>
           </div>
         </div>
@@ -272,8 +279,10 @@ export const OrderDetailView: React.FC = () => {
               <h3 className="text-base font-bold text-slate-900">Xác nhận Khóa Cọc Nhận Chuyến</h3>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Bạn đang nhận chuyến <strong>{order.originCity} ➔ {order.destCity}</strong>. Để cam kết không bùng cuốc, hệ thống sẽ đóng băng tiền cọc trách nhiệm từ Ví cọc của bạn.
+            <p className="text-xs text-slate-600 leading-relaxed flex flex-wrap items-center gap-1">
+              <span>Bạn đang nhận chuyến <strong>{order.originCity}</strong></span>
+              <ArrowRight className="w-3.5 h-3.5 inline text-blue-600 shrink-0" />
+              <span><strong>{order.destCity}</strong>. Để cam kết không bùng cuốc, hệ thống sẽ đóng băng tiền cọc trách nhiệm từ Ví cọc của bạn.</span>
             </p>
 
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">

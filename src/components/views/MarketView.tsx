@@ -15,6 +15,10 @@ import {
   ShieldCheck,
   ChevronRight,
   Flame,
+  Package,
+  Scale,
+  ArrowRight,
+  Lightbulb,
 } from "lucide-react";
 
 export const MarketView: React.FC = () => {
@@ -250,8 +254,10 @@ export const MarketView: React.FC = () => {
                     {/* Route & Tags */}
                     <div className="space-y-2 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h4 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                          {order.originCity} ➔ {order.destCity}
+                        <h4 className="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
+                          <span>{order.originCity}</span>
+                          <ArrowRight className="w-4 h-4 text-blue-600 inline shrink-0" />
+                          <span>{order.destCity}</span>
                         </h4>
 
                         {/* Badges matching image1.png */}
@@ -276,10 +282,22 @@ export const MarketView: React.FC = () => {
 
                       {/* Cargo specifics */}
                       <div className="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs text-slate-500 font-medium">
-                        <span>📦 {order.cargoName}</span>
-                        <span>⚖️ {order.cargoWeightKg / 1000} tấn</span>
-                        <span>🚚 {order.vehicleTypeRequired}</span>
-                        <span>📍 {order.distanceKm} km</span>
+                        <span className="flex items-center gap-1">
+                          <Package className="w-3.5 h-3.5 text-slate-400" />
+                          {order.cargoName}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Scale className="w-3.5 h-3.5 text-slate-400" />
+                          {order.cargoWeightKg / 1000} tấn
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Truck className="w-3.5 h-3.5 text-slate-400" />
+                          {order.vehicleTypeRequired}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                          {order.distanceKm} km
+                        </span>
                       </div>
 
                       {/* Timeline */}
@@ -290,8 +308,9 @@ export const MarketView: React.FC = () => {
                       </div>
 
                       {order.matchReason && (
-                        <p className="text-xs text-blue-700 bg-blue-50/80 p-2 rounded-lg font-medium border border-blue-100">
-                          💡 <strong>Gợi ý hệ thống:</strong> {order.matchReason}
+                        <p className="text-xs text-blue-700 bg-blue-50/80 p-2 rounded-lg font-medium border border-blue-100 flex items-center gap-1.5">
+                          <Lightbulb className="w-4 h-4 text-amber-500 shrink-0" />
+                          <span><strong>Gợi ý hệ thống:</strong> {order.matchReason}</span>
                         </p>
                       )}
                     </div>

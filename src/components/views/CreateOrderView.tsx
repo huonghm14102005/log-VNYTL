@@ -14,6 +14,7 @@ import {
   ArrowRight,
   ArrowLeft,
   Flame,
+  Lightbulb,
 } from "lucide-react";
 
 export const CreateOrderView: React.FC = () => {
@@ -242,8 +243,10 @@ export const CreateOrderView: React.FC = () => {
                   <AlertCircle className="w-4 h-4 text-amber-600" />
                   Quy định ký quỹ Escrow:
                 </p>
-                <p className="text-[11px] leading-relaxed">
-                  Giá trị hàng khai báo là <strong>{formatVND(declaredValue)}</strong>. Tiền cọc trách nhiệm của tài xế sẽ tính bằng 10% (trần tối đa 5.000.000đ) ➔ Cọc tài xế cần nộp: <strong className="text-blue-700 font-extrabold">{formatVND(requiredDeposit)}</strong>.
+                <p className="text-[11px] leading-relaxed flex flex-wrap items-center gap-1">
+                  <span>Giá trị hàng khai báo là <strong>{formatVND(declaredValue)}</strong>. Tiền cọc trách nhiệm của tài xế sẽ tính bằng 10% (trần tối đa 5.000.000đ)</span>
+                  <ArrowRight className="w-3.5 h-3.5 inline text-amber-700 shrink-0" />
+                  <span>Cọc tài xế cần nộp: <strong className="text-blue-700 font-extrabold">{formatVND(requiredDeposit)}</strong>.</span>
                 </p>
               </div>
 
@@ -342,9 +345,11 @@ export const CreateOrderView: React.FC = () => {
             </h3>
 
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 text-xs">
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-slate-500">Tuyến vận chuyển:</span>
-                <span className="font-extrabold text-slate-900">{originCity} ➔ {destCity}</span>
+                <span className="font-extrabold text-slate-900 flex items-center gap-1.5">
+                  {originCity} <ArrowRight className="w-4 h-4 text-blue-600 inline" /> {destCity}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Mặt hàng:</span>
@@ -360,8 +365,11 @@ export const CreateOrderView: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-100 text-xs text-blue-800">
-              💡 <strong>Hệ thống Ghép nối Tối ưu:</strong> Sau khi đăng, hệ thống sẽ tự động quét danh sách các chuyến xe tải về rỗng và đề xuất cho các tài xế uy tín đang dừng tại {originCity}!
+            <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-100 text-xs text-blue-800 flex items-start gap-2">
+              <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+              <div>
+                <strong>Hệ thống Ghép nối Tối ưu:</strong> Sau khi đăng, hệ thống sẽ tự động quét danh sách các chuyến xe tải về rỗng và đề xuất cho các tài xế uy tín đang dừng tại {originCity}!
+              </div>
             </div>
           </div>
         )}

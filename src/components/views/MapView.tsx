@@ -238,7 +238,13 @@ export const MapView: React.FC = () => {
                 <g transform={`translate(${500 - (simulatedKm / 120) * 380}, ${320 - (simulatedKm / 120) * 220})`}>
                   <circle r="20" fill="#2563EB" opacity="0.2" className="animate-ping" />
                   <rect x="-16" y="-12" width="32" height="24" rx="6" fill="#1E293B" stroke="#FFFFFF" strokeWidth="2" />
-                  <text x="-10" y="4" fill="#FFFFFF" fontSize="11">🚚</text>
+                  <g transform="translate(-10, -9) scale(0.85)">
+                    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M15 18H9" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M19 18h2a1 1 0 0 0 1-1v-5.28a1 1 0 0 0-.29-.7l-3.42-3.43a1 1 0 0 0-.71-.29H14v10.7" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="7" cy="18" r="2" fill="none" stroke="#FFFFFF" strokeWidth="2" />
+                    <circle cx="17" cy="18" r="2" fill="none" stroke="#FFFFFF" strokeWidth="2" />
+                  </g>
                 </g>
               ) : (
                 <g transform="translate(120, 100)">

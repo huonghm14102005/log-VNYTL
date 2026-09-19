@@ -2,24 +2,22 @@
 
 import React from "react";
 import { useApp } from "@/context/AppContext";
-import {
-  LayoutDashboard,
-  Search,
-  Truck,
-  MapPin,
-  Wallet,
-  Star,
-  LifeBuoy,
-  User,
-  Settings,
-  PlusCircle,
-  Package,
-} from "lucide-react";
+import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
+import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
+import AccountBalanceWalletRoundedIcon from "@mui/icons-material/AccountBalanceWalletRounded";
+import StarRoundedIcon from "@mui/icons-material/StarRounded";
+import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
+import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 
 interface NavItem {
   id: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   highlight?: boolean;
 }
 
@@ -27,28 +25,28 @@ export const Sidebar: React.FC = () => {
   const { role, activeTab, setActiveTab } = useApp();
 
   const driverNavItems: NavItem[] = [
-    { id: "dashboard", label: "Tổng quan", icon: LayoutDashboard },
-    { id: "market", label: "Tìm hàng", icon: Search },
-    { id: "my-orders", label: "Chuyến của tôi", icon: Truck },
-    { id: "map", label: "Bản đồ", icon: MapPin },
-    { id: "wallet", label: "Thu nhập", icon: Wallet },
-    { id: "reviews", label: "Đánh giá", icon: Star },
-    { id: "services", label: "Dịch vụ hỗ trợ", icon: LifeBuoy },
-    { id: "profile", label: "Hồ sơ tài xế", icon: User },
-    { id: "settings", label: "Cài đặt", icon: Settings },
+    { id: "dashboard", label: "Tổng quan", icon: DashboardRoundedIcon },
+    { id: "market", label: "Tìm hàng", icon: SearchRoundedIcon },
+    { id: "my-orders", label: "Chuyến của tôi", icon: LocalShippingRoundedIcon },
+    { id: "map", label: "Bản đồ", icon: LocationOnRoundedIcon },
+    { id: "wallet", label: "Thu nhập", icon: AccountBalanceWalletRoundedIcon },
+    { id: "reviews", label: "Đánh giá", icon: StarRoundedIcon },
+    { id: "services", label: "Dịch vụ hỗ trợ", icon: SupportAgentRoundedIcon },
+    { id: "profile", label: "Hồ sơ tài xế", icon: PersonRoundedIcon },
+    { id: "settings", label: "Cài đặt", icon: SettingsRoundedIcon },
   ];
 
   const shipperNavItems: NavItem[] = [
-    { id: "dashboard", label: "Tổng quan", icon: LayoutDashboard },
-    { id: "create-order", label: "+ Tạo đơn mới", icon: PlusCircle, highlight: true },
-    { id: "my-orders", label: "Đơn hàng của tôi", icon: Package },
-    { id: "market", label: "Chợ xe về rỗng", icon: Truck },
-    { id: "map", label: "Theo dõi hành trình", icon: MapPin },
-    { id: "wallet", label: "Thanh toán & Escrow", icon: Wallet },
-    { id: "reviews", label: "Đánh giá tài xế", icon: Star },
-    { id: "services", label: "Trung tâm hỗ trợ", icon: LifeBuoy },
-    { id: "profile", label: "Hồ sơ chủ hàng", icon: User },
-    { id: "settings", label: "Cài đặt", icon: Settings },
+    { id: "dashboard", label: "Tổng quan", icon: DashboardRoundedIcon },
+    { id: "create-order", label: "+ Tạo đơn mới", icon: AddCircleOutlineRoundedIcon, highlight: true },
+    { id: "my-orders", label: "Đơn hàng của tôi", icon: Inventory2RoundedIcon },
+    { id: "market", label: "Chợ xe về rỗng", icon: LocalShippingRoundedIcon },
+    { id: "map", label: "Theo dõi hành trình", icon: LocationOnRoundedIcon },
+    { id: "wallet", label: "Thanh toán & Escrow", icon: AccountBalanceWalletRoundedIcon },
+    { id: "reviews", label: "Đánh giá tài xế", icon: StarRoundedIcon },
+    { id: "services", label: "Trung tâm hỗ trợ", icon: SupportAgentRoundedIcon },
+    { id: "profile", label: "Hồ sơ chủ hàng", icon: PersonRoundedIcon },
+    { id: "settings", label: "Cài đặt", icon: SettingsRoundedIcon },
   ];
 
   const navItems = role === "SHIPPER" ? shipperNavItems : driverNavItems;
@@ -58,7 +56,7 @@ export const Sidebar: React.FC = () => {
       {/* Brand Logo */}
       <div className="p-5 flex items-center gap-3 border-b border-slate-800/80">
         <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
-          <Truck className="w-6 h-6" />
+          <LocalShippingRoundedIcon className="!w-6 !h-6" />
         </div>
         <div>
           <h1 className="text-white font-bold text-base tracking-tight flex items-center gap-1.5">

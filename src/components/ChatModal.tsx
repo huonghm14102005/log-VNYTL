@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
-import { X, Send, ShieldAlert, AlertCircle, Sparkles } from "lucide-react";
+import { X, Send, ShieldAlert, AlertCircle, AlertTriangle, FlaskConical, MessageSquare } from "lucide-react";
 
 export const ChatModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   isOpen,
@@ -75,8 +75,9 @@ export const ChatModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
                 </div>
 
                 {msg.isFiltered && (
-                  <span className="text-[10px] text-red-500 font-bold mt-0.5 flex items-center gap-0.5">
-                    ⚠️ Hệ thống đã che giấu số điện thoại / từ khóa né sàn
+                  <span className="text-[10px] text-red-500 font-bold mt-0.5 flex items-center gap-1">
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                    Hệ thống đã che giấu số điện thoại / từ khóa né sàn
                   </span>
                 )}
               </div>
@@ -89,15 +90,17 @@ export const ChatModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
           <span className="text-slate-400 font-semibold shrink-0">Thử nghiệm:</span>
           <button
             onClick={() => setInputText("Alo kết bạn Zalo số 0912345678 để đi riêng nhé")}
-            className="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-slate-700 font-medium shrink-0"
+            className="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-slate-700 font-medium shrink-0 flex items-center gap-1"
           >
-            🧪 Thử gõ lộ SĐT né sàn
+            <FlaskConical className="w-3 h-3 text-amber-600" />
+            Thử gõ lộ SĐT né sàn
           </button>
           <button
             onClick={() => setInputText("Xe tôi đang đến cổng cảng Đình Vũ, bạn cho người ra đón nhé")}
-            className="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-slate-700 font-medium shrink-0"
+            className="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-slate-200 text-slate-700 font-medium shrink-0 flex items-center gap-1"
           >
-            💬 Tin nhắn trao đổi hợp lệ
+            <MessageSquare className="w-3 h-3 text-blue-600" />
+            Tin nhắn trao đổi hợp lệ
           </button>
         </div>
 

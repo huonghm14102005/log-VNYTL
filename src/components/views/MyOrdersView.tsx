@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
 import { formatVND } from "@/lib/currency";
-import { Truck, MapPin, Clock, ChevronRight, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { Truck, MapPin, Clock, ChevronRight, ShieldCheck, CheckCircle2, Package, Scale, ArrowRight } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export const MyOrdersView: React.FC = () => {
@@ -114,15 +114,26 @@ export const MyOrdersView: React.FC = () => {
                 {getStatusBadge(order.status)}
               </div>
 
-              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                {order.originCity} ➔ {order.destCity}
-                <span className="text-xs font-normal text-slate-400">({order.distanceKm} km)</span>
+              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
+                <span>{order.originCity}</span>
+                <ArrowRight className="w-4 h-4 text-blue-600 inline shrink-0" />
+                <span>{order.destCity}</span>
+                <span className="text-xs font-normal text-slate-400 ml-1">({order.distanceKm} km)</span>
               </h3>
 
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 font-medium">
-                <span>📦 {order.cargoName}</span>
-                <span>⚖️ {order.cargoWeightKg / 1000} tấn</span>
-                <span>🚚 {order.vehicleTypeRequired}</span>
+                <span className="flex items-center gap-1">
+                  <Package className="w-3.5 h-3.5 text-slate-400" />
+                  {order.cargoName}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Scale className="w-3.5 h-3.5 text-slate-400" />
+                  {order.cargoWeightKg / 1000} tấn
+                </span>
+                <span className="flex items-center gap-1">
+                  <Truck className="w-3.5 h-3.5 text-slate-400" />
+                  {order.vehicleTypeRequired}
+                </span>
               </div>
 
               <div className="flex flex-wrap items-center gap-x-4 text-xs text-slate-600">
