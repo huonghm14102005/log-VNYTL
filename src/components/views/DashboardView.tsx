@@ -66,7 +66,7 @@ export const DashboardView: React.FC = () => {
       {/* 2. 4 KPI Stat Cards matching image1.png */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1 */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">Chuyến hôm nay</p>
           <div className="flex items-baseline justify-between">
             <h3 className="text-2xl font-extrabold text-slate-800">5</h3>
@@ -77,7 +77,7 @@ export const DashboardView: React.FC = () => {
         </div>
 
         {/* Card 2 */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">Đang vận chuyển</p>
           <div className="flex items-baseline justify-between">
             <h3 className="text-2xl font-extrabold text-blue-600">2</h3>
@@ -88,7 +88,7 @@ export const DashboardView: React.FC = () => {
         </div>
 
         {/* Card 3 */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">Đã hoàn thành</p>
           <div className="flex items-baseline justify-between">
             <h3 className="text-2xl font-extrabold text-slate-800">3</h3>
@@ -99,7 +99,7 @@ export const DashboardView: React.FC = () => {
         </div>
 
         {/* Card 4 */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">
             {isDriver ? "Thu nhập hôm nay" : "Chi phí vận tải tuần này"}
           </p>

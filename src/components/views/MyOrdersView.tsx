@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
 import { formatVND } from "@/lib/currency";
 import { Truck, MapPin, Clock, ChevronRight, ShieldCheck, CheckCircle2 } from "lucide-react";
+import confetti from "canvas-confetti";
 
 export const MyOrdersView: React.FC = () => {
   const { orders, setSelectedOrder, setActiveTab, role, confirmReleaseEscrow } = useApp();
@@ -141,8 +142,11 @@ export const MyOrdersView: React.FC = () => {
               <div className="flex items-center gap-2">
                 {role === "SHIPPER" && order.status === "DELIVERED" && (
                   <button
-                    onClick={() => confirmReleaseEscrow(order.id)}
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs transition-all flex items-center gap-1.5"
+                    onClick={() => {
+                      confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+                      confirmReleaseEscrow(order.id);
+                    }}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-md transition-all flex items-center gap-1.5 btn-press"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     Xác nhận nhận đủ hàng & Giải ngân
@@ -154,7 +158,7 @@ export const MyOrdersView: React.FC = () => {
                     setSelectedOrder(order);
                     setActiveTab(order.status === "IN_TRANSIT" ? "map" : "order-detail");
                   }}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs transition-all flex items-center gap-1.5"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs transition-all flex items-center gap-1.5 btn-press"
                 >
                   Xem chi tiết
                   <ChevronRight className="w-3.5 h-3.5" />
