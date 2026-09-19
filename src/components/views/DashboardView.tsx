@@ -40,14 +40,14 @@ export const DashboardView: React.FC = () => {
           <p className="text-blue-100 text-sm leading-relaxed">
             {isDriver
               ? "Chúc bạn có những chuyến đi an toàn, tối ưu chi phí với các chuyến về rỗng!"
-              : "Hệ thống AI đã tự động quét và tìm thấy 3 xe tải về rỗng có thể giảm tới 25% cước!"}
+              : "Hệ thống đã tự động quét và tìm thấy 3 xe tải về rỗng có thể giảm tới 25% cước!"}
           </p>
           {!isDriver && (
             <button
               onClick={() => setActiveTab("create-order")}
               className="mt-2 inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-4 py-2.5 rounded-xl text-sm transition-all shadow-md"
             >
-              + Đăng đơn hàng mới (Nhập bằng AI)
+              + Đăng đơn hàng mới (Điền nhanh)
               <ChevronRight className="w-4 h-4" />
             </button>
           )}

@@ -52,7 +52,7 @@ export const MarketView: React.FC = () => {
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              Đề xuất AI [Xe về rỗng]
+              Đề xuất xe về rỗng (Tiết kiệm 25%)
             </button>
             <button
               onClick={() => setFilterType("URGENT")}
@@ -223,7 +223,7 @@ export const MarketView: React.FC = () => {
             <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
               <span>Sắp xếp:</span>
               <select className="bg-transparent font-bold text-slate-800 focus:outline-none cursor-pointer">
-                <option>Độ khớp AI cao nhất</option>
+                <option>Độ khớp tối ưu nhất</option>
                 <option>Cước cao nhất</option>
                 <option>Thời gian gần nhất</option>
               </select>
@@ -262,7 +262,7 @@ export const MarketView: React.FC = () => {
                         {order.matchScore && (
                           <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-100 text-blue-800 border border-blue-200 flex items-center gap-1">
                             <Sparkles className="w-3 h-3 text-amber-500" />
-                            Khớp {order.matchScore}% [AI]
+                            Khớp tuyến {order.matchScore}%
                           </span>
                         )}
 
@@ -291,7 +291,7 @@ export const MarketView: React.FC = () => {
 
                       {order.matchReason && (
                         <p className="text-xs text-blue-700 bg-blue-50/80 p-2 rounded-lg font-medium border border-blue-100">
-                          💡 <strong>Gợi ý AI:</strong> {order.matchReason}
+                          💡 <strong>Gợi ý hệ thống:</strong> {order.matchReason}
                         </p>
                       )}
                     </div>

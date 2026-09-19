@@ -94,12 +94,12 @@ export const CreateOrderView: React.FC = () => {
         </button>
       </div>
 
-      {/* AI Quick Input Box (Tính năng ghi điểm VYLT 2026) */}
-      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-5 text-white shadow-md space-y-3">
+      {/* Quick Input Box */}
+      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-slate-800 rounded-2xl p-5 text-white shadow-md space-y-3">
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-300">
             <Sparkles className="w-4 h-4 text-amber-300" />
-            Nhập nhanh bằng Trợ lý AI (NLP Prompt)
+            Nhập nhanh đơn hàng (Mẫu điền tự động)
           </span>
           <span className="text-[11px] text-blue-100 font-medium">1 chạm điền tự động</span>
         </div>
@@ -421,7 +421,7 @@ export const CreateOrderView: React.FC = () => {
             </div>
 
             <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-100 text-xs text-blue-800">
-              💡 <strong>Thuật toán Ghép cặp AI:</strong> Sau khi đăng, hệ thống sẽ tự động quét danh sách các chuyến xe tải về rỗng và đề xuất cho các tài xế uy tín đang dừng tại {originCity}!
+              💡 <strong>Hệ thống Ghép nối Tối ưu:</strong> Sau khi đăng, hệ thống sẽ tự động quét danh sách các chuyến xe tải về rỗng và đề xuất cho các tài xế uy tín đang dừng tại {originCity}!
             </div>
           </div>
         )}

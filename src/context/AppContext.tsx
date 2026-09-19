@@ -317,7 +317,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setMessages((prev) => [...prev, newMsg]);
 
     if (isLeaked) {
-      showToast("Cảnh báo AI: Tin nhắn chứa số điện thoại hoặc từ khóa né sàn đã bị che giấu để bảo vệ giao dịch!");
+      showToast("Cảnh báo: Tin nhắn chứa số điện thoại hoặc từ khóa né sàn đã bị che giấu để bảo vệ giao dịch!");
     }
   };
 

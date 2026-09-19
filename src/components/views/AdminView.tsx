@@ -67,7 +67,7 @@ export const AdminView: React.FC = () => {
               <p className="text-slate-500">CCCD: 031089004512 · Bằng lái: Hạng C (5 năm)</p>
               <p className="text-slate-500">Phương tiện: Xe tải thùng 8 tấn (Biển: 29C-987.65)</p>
               <span className="inline-block text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded text-[10px]">
-                AI OCR Face-Match: Khớp 97%
+                Đối chiếu hồ sơ: Khớp 97%
               </span>
             </div>
           </div>

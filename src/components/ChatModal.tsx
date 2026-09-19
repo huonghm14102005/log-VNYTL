@@ -31,7 +31,7 @@ export const ChatModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
             </h3>
             <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
               <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
-              Bộ lọc AI Anti-Leakage đang kích hoạt bảo vệ
+              Bộ lọc Anti-Leakage đang kích hoạt bảo vệ
             </p>
           </div>
           <button onClick={onClose} className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white">
@@ -76,7 +76,7 @@ export const ChatModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
 
                 {msg.isFiltered && (
                   <span className="text-[10px] text-red-500 font-bold mt-0.5 flex items-center gap-0.5">
-                    ⚠️ AI đã che giấu số điện thoại / từ khóa né sàn
+                    ⚠️ Hệ thống đã che giấu số điện thoại / từ khóa né sàn
                   </span>
                 )}
               </div>
