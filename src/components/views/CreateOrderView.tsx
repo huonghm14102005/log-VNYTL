@@ -20,7 +20,6 @@ export const CreateOrderView: React.FC = () => {
   const { createOrder, setActiveTab, setSelectedOrder } = useApp();
 
   const [step, setStep] = useState(1);
-  const [aiPrompt, setAiPrompt] = useState("");
 
   // Form states
   const [originCity, setOriginCity] = useState("Hải Phòng");
@@ -38,23 +37,6 @@ export const CreateOrderView: React.FC = () => {
 
   // Tính cọc yêu cầu: 10% giá trị khai báo, tối đa trần 5tr
   const requiredDeposit = Math.min(5000000, Math.max(300000, declaredValue * 0.1));
-
-  // AI Prompt Auto-fill demo
-  const handleApplyAiPrompt = (sampleText: string) => {
-    setAiPrompt(sampleText);
-    setOriginCity("Hải Phòng");
-    setOriginAddress("Kho Thép Cảng Đình Vũ, Hải Phòng");
-    setDestCity("Hà Nội");
-    setDestAddress("Tổng kho KCN Thăng Long, Hà Nội");
-    setCargoName("8 Tấn Cuộn Thép Công Nghiệp");
-    setCargoWeightKg(8000);
-    setVehicleType("Xe tải thùng");
-    setDeclaredValue(200000000);
-    setFreightPrice(3800000);
-    setUrgencyLevel("URGENT");
-    setServicePackage("SUPERVISED");
-    setStep(4); // Nhảy ngay tới bước 4 để xem lại
-  };
 
   const handleSubmit = () => {
     const newOrder = createOrder({
@@ -92,48 +74,6 @@ export const CreateOrderView: React.FC = () => {
         >
           Hủy bỏ
         </button>
-      </div>
-
-      {/* Quick Input Box */}
-      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-slate-800 rounded-2xl p-5 text-white shadow-md space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-300">
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            Nhập nhanh đơn hàng (Mẫu điền tự động)
-          </span>
-          <span className="text-[11px] text-blue-100 font-medium">1 chạm điền tự động</span>
-        </div>
-
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={aiPrompt}
-            onChange={(e) => setAiPrompt(e.target.value)}
-            placeholder="Ví dụ: Cần xe 10 tấn chở 8 tấn cuộn thép từ Đình Vũ Hải Phòng về KCN Thăng Long Hà Nội chiều nay, giá 3.8tr..."
-            className="flex-1 bg-white/10 text-white placeholder-blue-200 text-xs px-3.5 py-2.5 rounded-xl border border-white/20 focus:outline-none focus:bg-white/20"
-          />
-          <button
-            onClick={() => handleApplyAiPrompt(aiPrompt || "Cần xe 10 tấn chở 8 tấn cuộn thép từ Đình Vũ Hải Phòng về KCN Thăng Long Hà Nội chiều nay, giá 3.8tr")}
-            className="bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-extrabold px-4 py-2.5 rounded-xl transition-all shadow-sm shrink-0"
-          >
-            Phân tích & Điền form
-          </button>
-        </div>
-
-        {/* Mẫu thử nghiệm 1 chạm */}
-        <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px]">
-          <span className="text-blue-200">Gợi ý mẫu demo:</span>
-          <button
-            onClick={() =>
-              handleApplyAiPrompt(
-                "Hải Phòng về Hà Nội, 8 tấn thép cuộn, cần xe gấp chiều nay, giá 3.800.000đ"
-              )
-            }
-            className="bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded-lg border border-white/20 text-white transition-all text-left"
-          >
-            🎯 Tuyến Hải Phòng ➔ Hà Nội (8 tấn thép, xe gấp, 3.8tr)
-          </button>
-        </div>
       </div>
 
       {/* Wizard Stepper Indicators */}

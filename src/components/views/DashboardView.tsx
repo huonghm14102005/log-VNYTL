@@ -47,7 +47,7 @@ export const DashboardView: React.FC = () => {
               onClick={() => setActiveTab("create-order")}
               className="mt-2 inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-4 py-2.5 rounded-xl text-sm transition-all shadow-md"
             >
-              + Đăng đơn hàng mới (Điền nhanh)
+              + Đăng đơn hàng mới
               <ChevronRight className="w-4 h-4" />
             </button>
           )}
