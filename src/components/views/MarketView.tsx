@@ -19,6 +19,13 @@ import {
   Scale,
   ArrowRight,
   Lightbulb,
+  Box,
+  Boxes,
+  Snowflake,
+  Droplet,
+  Layers,
+  Construction,
+  Repeat,
 } from "lucide-react";
 
 export const MarketView: React.FC = () => {
@@ -37,7 +44,7 @@ export const MarketView: React.FC = () => {
 
   // State Loại xe chuyên dụng
   const [isSpecialized, setIsSpecialized] = useState(false);
-  const [specializedTypes, setSpecializedTypes] = useState<string[]>(["🛢️ Xe bồn (Xitec)"]);
+  const [specializedTypes, setSpecializedTypes] = useState<string[]>(["Xe bồn (Xitec chất lỏng/xăng dầu)"]);
   const [specializedNote, setSpecializedNote] = useState("");
 
   const filteredOrders = orders.filter((order) => {
@@ -213,35 +220,36 @@ export const MarketView: React.FC = () => {
                 <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3 space-y-2 animate-fadeIn mt-1.5">
                   <p className="text-[11px] font-bold text-blue-950 flex items-center justify-between">
                     <span>Quy cách vỏ Container:</span>
-                    <span className="text-[10px] text-blue-600 font-normal">Chọn loại Cont</span>
+                    <span className="text-[10px] text-blue-600 font-normal">Chọn nhiều loại</span>
                   </p>
                   <div className="flex flex-wrap gap-1.5">
                     {[
-                      "Cont 20 feet (20ft)",
-                      "Cont 40 feet DC (Tiêu chuẩn)",
-                      "Cont 40 feet HC (Cao)",
-                      "Cont Lạnh (RF)",
-                      "Kéo vỏ Cont rỗng",
-                    ].map((cType) => {
-                      const isSel = containerTypes.includes(cType);
+                      { label: "Cont 20 feet (20ft)", Icon: Box },
+                      { label: "Cont 40ft DC (Tiêu chuẩn)", Icon: Boxes },
+                      { label: "Cont 40ft HC (Cao)", Icon: Boxes },
+                      { label: "Cont Lạnh (RF)", Icon: Snowflake },
+                      { label: "Kéo vỏ Cont rỗng", Icon: Repeat },
+                    ].map(({ label, Icon }) => {
+                      const isSel = containerTypes.includes(label);
                       return (
                         <button
-                          key={cType}
+                          key={label}
                           type="button"
                           onClick={() => {
                             if (isSel) {
-                              setContainerTypes(containerTypes.filter((t) => t !== cType));
+                              setContainerTypes(containerTypes.filter((t) => t !== label));
                             } else {
-                              setContainerTypes([...containerTypes, cType]);
+                              setContainerTypes([...containerTypes, label]);
                             }
                           }}
-                          className={`text-[10px] px-2 py-1 rounded-lg font-semibold transition-all ${
+                          className={`text-[10px] px-2 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
                             isSel
                               ? "bg-blue-600 text-white shadow-2xs"
                               : "bg-white text-slate-700 border border-blue-200 hover:border-blue-400"
                           }`}
                         >
-                          {cType}
+                          <Icon className={`w-3 h-3 ${isSel ? "text-white" : "text-blue-600"}`} />
+                          <span>{label}</span>
                         </button>
                       );
                     })}
@@ -314,36 +322,37 @@ export const MarketView: React.FC = () => {
               <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3 space-y-2.5 animate-fadeIn mt-2">
                 <p className="text-[11px] font-bold text-blue-950 flex items-center justify-between">
                   <span>Dòng xe chuyên dụng:</span>
-                  <span className="text-[10px] text-blue-600 font-normal">Chọn cấu hình</span>
+                  <span className="text-[10px] text-blue-600 font-normal">Chọn nhiều cấu hình</span>
                 </p>
 
-                {/* Các lựa chọn: Xe bồn, Xe moóc, v.v. */}
+                {/* Các lựa chọn cấu hình có Icon Lucide chuẩn */}
                 <div className="flex flex-wrap gap-1.5">
                   {[
-                    "🛢️ Xe bồn (Xitec chất lỏng/xăng dầu/hóa chất)",
-                    "🚜 Xe moóc (Moóc lùn / Moóc sàn / Moóc ben)",
-                    "🏗️ Xe cẩu tự hành",
-                    "❄️ Xe đông lạnh (-18°C)",
-                  ].map((subType) => {
-                    const isSelected = specializedTypes.includes(subType);
+                    { label: "Xe bồn (Xitec chất lỏng/xăng dầu)", Icon: Droplet },
+                    { label: "Xe moóc (Moóc lùn / Moóc sàn)", Icon: Layers },
+                    { label: "Xe cẩu tự hành", Icon: Construction },
+                    { label: "Xe đông lạnh (-18°C)", Icon: Snowflake },
+                  ].map(({ label, Icon }) => {
+                    const isSelected = specializedTypes.includes(label);
                     return (
                       <button
-                        key={subType}
+                        key={label}
                         type="button"
                         onClick={() => {
                           if (isSelected) {
-                            setSpecializedTypes(specializedTypes.filter((t) => t !== subType));
+                            setSpecializedTypes(specializedTypes.filter((t) => t !== label));
                           } else {
-                            setSpecializedTypes([...specializedTypes, subType]);
+                            setSpecializedTypes([...specializedTypes, label]);
                           }
                         }}
-                        className={`text-[10px] px-2 py-1 rounded-lg font-semibold transition-all ${
+                        className={`text-[10px] px-2 py-1 rounded-lg font-semibold transition-all flex items-center gap-1.5 ${
                           isSelected
                             ? "bg-blue-600 text-white shadow-2xs"
                             : "bg-white text-slate-700 border border-blue-200 hover:border-blue-400"
                         }`}
                       >
-                        {subType}
+                        <Icon className={`w-3 h-3 ${isSelected ? "text-white" : "text-blue-600"}`} />
+                        <span>{label}</span>
                       </button>
                     );
                   })}
