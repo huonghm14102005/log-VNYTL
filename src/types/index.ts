@@ -17,6 +17,30 @@ export type ServicePackage = "STANDARD" | "SUPERVISED" | "INSURED";
 
 export type UrgencyLevel = "NORMAL" | "URGENT" | "FLEXIBLE";
 
+export type KycStatus = "UNVERIFIED" | "PENDING" | "VERIFIED" | "REJECTED";
+
+export interface DriverKycApplication {
+  id: string;
+  driverId: string;
+  fullName: string;
+  phone: string;
+  cccdNumber: string;
+  dob: string;
+  driverLicenseNumber: string;
+  driverLicenseClass: string;
+  plateNumber: string;
+  vehicleType: string;
+  maxPayloadKg: number;
+  bankName: string;
+  bankAccount: string;
+  cccdFrontUrl?: string;
+  cccdBackUrl?: string;
+  portraitUrl?: string;
+  status: KycStatus;
+  submittedAt: string;
+  matchScore: number;
+}
+
 export interface User {
   id: string;
   fullName: string;
@@ -28,6 +52,7 @@ export interface User {
   totalTrips: number;
   completedRate: number;
   isVerified: boolean;
+  kycStatus?: KycStatus;
   idCardNumber?: string;
   driverLicense?: string;
 }

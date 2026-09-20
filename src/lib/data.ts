@@ -1,4 +1,4 @@
-import { Order, ReturnTrip, User, Vehicle, Wallet } from "@/types";
+import { Order, ReturnTrip, User, Vehicle, Wallet, DriverKycApplication } from "@/types";
 
 export const initialDriver: User = {
   id: "driver-01",
@@ -10,8 +10,31 @@ export const initialDriver: User = {
   totalTrips: 128,
   completedRate: 98,
   isVerified: true,
+  kycStatus: "VERIFIED",
   idCardNumber: "024090000123",
   driverLicense: "Hạng FC (2 năm)",
+};
+
+export const initialPendingKycApplication: DriverKycApplication = {
+  id: "kyc-app-01",
+  driverId: "driver-02",
+  fullName: "Lê Hoàng Nam",
+  phone: "0912889977",
+  cccdNumber: "031089004512",
+  dob: "15/08/1989",
+  driverLicenseNumber: "B2-79012345",
+  driverLicenseClass: "Hạng C (5 năm kinh nghiệm)",
+  plateNumber: "29C-987.65",
+  vehicleType: "Xe tải thùng 8 tấn",
+  maxPayloadKg: 8000,
+  bankName: "Techcombank",
+  bankAccount: "19034567890123",
+  cccdFrontUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80",
+  cccdBackUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80",
+  portraitUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+  status: "PENDING",
+  submittedAt: "Hôm nay 08:30",
+  matchScore: 97,
 };
 
 export const initialVehicle: Vehicle = {

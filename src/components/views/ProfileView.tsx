@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
+import { DriverKycModal } from "@/components/DriverKycModal";
 import {
   UserCheck,
   Truck,
   Star,
   ShieldCheck,
+  ShieldAlert,
+  Clock,
   CreditCard,
   Phone,
   Mail,
@@ -20,18 +23,40 @@ import { initialVehicle } from "@/lib/data";
 
 export const ProfileView: React.FC = () => {
   const { driver, role, shipper } = useApp();
+  const [isKycModalOpen, setIsKycModalOpen] = useState(false);
 
   const isDriver = role === "DRIVER";
 
   return (
     <div className="space-y-6 pb-12 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <h2 className="text-xl font-bold text-slate-800">
           {isDriver ? "Hồ sơ đối tác Tài xế" : "Hồ sơ Chủ hàng Doanh nghiệp"}
         </h2>
-        <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 flex items-center gap-1.5 border border-emerald-200">
-          <UserCheck className="w-4 h-4" /> Đã xác thực eKYC CCCD cấp độ 2
-        </span>
+        {isDriver ? (
+          <button
+            onClick={() => setIsKycModalOpen(true)}
+            className="transition-transform hover:scale-105"
+          >
+            {driver.kycStatus === "VERIFIED" ? (
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 flex items-center gap-1.5 border border-emerald-200 shadow-xs cursor-pointer">
+                <UserCheck className="w-4 h-4" /> Đã xác thực eKYC CCCD Cấp độ 2 (Bộ GTVT)
+              </span>
+            ) : driver.kycStatus === "PENDING" ? (
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 flex items-center gap-1.5 border border-amber-300 shadow-xs cursor-pointer animate-pulse">
+                <Clock className="w-4 h-4" /> Hồ sơ eKYC CCCD đang chờ thẩm duyệt
+              </span>
+            ) : (
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 flex items-center gap-1.5 border border-rose-200 shadow-xs cursor-pointer">
+                <ShieldAlert className="w-4 h-4" /> Chưa hoàn tất eKYC CCCD (Bấm để nộp)
+              </span>
+            )}
+          </button>
+        ) : (
+          <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 flex items-center gap-1.5 border border-blue-200">
+            <UserCheck className="w-4 h-4" /> Doanh nghiệp xuất nhập khẩu uy tín
+          </span>
+        )}
       </div>
 
       {/* Driver Card & Vehicle Card Split matching Screen 7 in image1.png */}
@@ -182,6 +207,12 @@ export const ProfileView: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Driver eKYC Modal */}
+      <DriverKycModal
+        isOpen={isKycModalOpen}
+        onClose={() => setIsKycModalOpen(false)}
+      />
     </div>
   );
 };

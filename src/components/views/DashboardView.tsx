@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
 import { formatVND } from "@/lib/currency";
+import { DriverKycModal } from "@/components/DriverKycModal";
 import {
   Truck,
   PackageCheck,
@@ -13,11 +14,16 @@ import {
   ArrowUpRight,
   ArrowRight,
   ShieldCheck,
+  ShieldAlert,
+  AlertCircle,
   Sparkles,
+  RefreshCw,
+  FileCheck2,
 } from "lucide-react";
 
 export const DashboardView: React.FC = () => {
-  const { role, driver, shipper, orders, setActiveTab, setSelectedOrder } = useApp();
+  const { role, setRole, driver, shipper, orders, setActiveTab, setSelectedOrder, switchDriverAccountStatus } = useApp();
+  const [isKycModalOpen, setIsKycModalOpen] = useState(false);
 
   const isDriver = role === "DRIVER";
   const currentUser = isDriver ? driver : shipper;
@@ -63,6 +69,121 @@ export const DashboardView: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* 1.5. Driver eKYC Onboarding & Verification Status Banner */}
+      {isDriver && (
+        <div className="rounded-2xl transition-all">
+          {driver.kycStatus === "VERIFIED" ? (
+            <div className="bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-50 border border-emerald-200/80 rounded-2xl p-4.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-600/30">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-sm font-bold text-emerald-900">
+                      Tài khoản đã hoàn tất eKYC CCCD & Hồ sơ phương tiện
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-200 text-emerald-800 uppercase tracking-wide">
+                      ĐÃ PHÊ DUYỆT
+                    </span>
+                  </div>
+                  <p className="text-xs text-emerald-700 mt-0.5">
+                    CCCD: 001095018291 • Bằng lái GPLX Hạng C • Xe tải: 29C-998.88 (8 tấn) • Đủ điều kiện nhận chuyến & khóa cọc 10%.
+                  </p>
+                </div>
+              </div>
+
+              {/* Demo Switcher Button */}
+              <div className="flex items-center gap-2 self-stretch md:self-auto justify-end">
+                <button
+                  onClick={() => switchDriverAccountStatus("PENDING")}
+                  className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-emerald-300 text-emerald-800 hover:bg-emerald-100/70 transition-colors flex items-center gap-1.5"
+                  title="Chuyển sang trạng thái Chờ duyệt để thử nghiệm tính năng khóa nhận đơn"
+                >
+                  <RefreshCw className="w-3.5 h-3.5 text-emerald-600" />
+                  Mô phỏng: Chờ Admin duyệt
+                </button>
+                <button
+                  onClick={() => setIsKycModalOpen(true)}
+                  className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition-colors"
+                >
+                  Xem hồ sơ eKYC
+                </button>
+              </div>
+            </div>
+          ) : driver.kycStatus === "PENDING" ? (
+            <div className="bg-gradient-to-r from-amber-50 via-yellow-50/80 to-amber-50 border-2 border-amber-300 rounded-2xl p-4.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-amber-500/30 animate-pulse">
+                  <Clock className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-sm font-bold text-amber-950">
+                      Hồ sơ eKYC CCCD & Xe tải đang chờ Ban Quản Trị thẩm duyệt
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-200 text-amber-900 uppercase tracking-wide">
+                      ĐANG XỬ LÝ (KHÓA NHẬN ĐƠN)
+                    </span>
+                  </div>
+                  <p className="text-xs text-amber-800 mt-1 leading-relaxed">
+                    Theo quy chuẩn vận tải an toàn 2026, tài khoản đang tạm thời <strong>KHÓA tính năng Nhận chuyến & Cọc ví</strong> cho đến khi hồ sơ CCCD gắn chip và Đăng kiểm được duyệt.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 self-stretch md:self-auto justify-end">
+                <button
+                  onClick={() => {
+                    setRole("ADMIN");
+                    setActiveTab("admin");
+                  }}
+                  className="text-xs font-bold px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white transition-all shadow-sm flex items-center gap-1.5"
+                >
+                  <FileCheck2 className="w-4 h-4" />
+                  Chuyển sang Quản trị viên duyệt ngay
+                </button>
+                <button
+                  onClick={() => switchDriverAccountStatus("VERIFIED")}
+                  className="text-xs font-semibold px-3 py-2 rounded-xl border border-amber-300 text-amber-900 hover:bg-amber-100 transition-colors"
+                >
+                  Kích hoạt nhanh
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-gradient-to-r from-rose-50 via-orange-50/70 to-rose-50 border border-rose-200 rounded-2xl p-4.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-rose-600/30">
+                  <ShieldAlert className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-sm font-bold text-rose-950">
+                      Chưa hoàn tất eKYC Căn cước công dân & Giấy phép lái xe
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-200 text-rose-800 uppercase tracking-wide">
+                      CHƯA KÍCH HOẠT
+                    </span>
+                  </div>
+                  <p className="text-xs text-rose-700 mt-0.5">
+                    Vui lòng nộp hồ sơ eKYC trực tuyến (CCCD, Chân dung selfie, GPLX và Cà vẹt xe) để được kích hoạt nhận chuyến chạy hàng.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setIsKycModalOpen(true)}
+                className="text-xs font-bold px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white transition-all shadow-sm flex items-center gap-1.5 self-stretch md:self-auto justify-center"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                Nộp hồ sơ eKYC CCCD (4 bước)
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* 2. 4 KPI Stat Cards matching image1.png */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -249,6 +370,12 @@ export const DashboardView: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Driver eKYC Modal */}
+      <DriverKycModal
+        isOpen={isKycModalOpen}
+        onClose={() => setIsKycModalOpen(false)}
+      />
     </div>
   );
 };

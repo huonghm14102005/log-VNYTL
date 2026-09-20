@@ -1,14 +1,15 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { Order, ReturnTrip, User, UserRole, Wallet, ChatMessage } from "@/types";
-import { initialDriver, initialShipper, initialOrders, initialReturnTrips, initialWallet } from "@/lib/data";
+import React, { createContext, useContext, useState } from "react";
+import { Order, ReturnTrip, User, UserRole, Wallet, ChatMessage, DriverKycApplication, KycStatus } from "@/types";
+import { initialDriver, initialShipper, initialOrders, initialReturnTrips, initialWallet, initialPendingKycApplication } from "@/lib/data";
 import { sanitizeChatMessage } from "@/lib/anti-leakage";
 
 interface AppContextType {
   role: UserRole;
   setRole: (role: UserRole) => void;
   driver: User;
+  setDriver: React.Dispatch<React.SetStateAction<User>>;
   shipper: User;
   orders: Order[];
   returnTrips: ReturnTrip[];
@@ -17,6 +18,13 @@ interface AppContextType {
   setActiveTab: (tab: string) => void;
   selectedOrder: Order | null;
   setSelectedOrder: (order: Order | null) => void;
+
+  // eKYC Onboarding
+  kycApplications: DriverKycApplication[];
+  submitDriverKyc: (data: Partial<DriverKycApplication>) => void;
+  approveDriverKyc: (appId: string) => void;
+  rejectDriverKyc: (appId: string, reason?: string) => void;
+  switchDriverAccountStatus: (status: KycStatus) => void;
 
   // Actions
   createOrder: (orderData: Partial<Order>) => Order;
@@ -40,6 +48,8 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [role, setRole] = useState<UserRole>("DRIVER");
+  const [driver, setDriver] = useState<User>(initialDriver);
+  const [kycApplications, setKycApplications] = useState<DriverKycApplication[]>([initialPendingKycApplication]);
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [returnTrips, setReturnTrips] = useState<ReturnTrip[]>(initialReturnTrips);
@@ -121,6 +131,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // 2. Tài xế nhận đơn & Khóa cọc 10%
   const acceptOrderAndLockDeposit = (orderId: string): boolean => {
+    // Kiểm tra trạng thái eKYC của tài xế
+    if (driver.kycStatus !== "VERIFIED") {
+      showToast("Tài khoản chưa hoàn tất phê duyệt eKYC CCCD & Hồ sơ phương tiện! Vui lòng hoàn thiện hồ sơ để nhận đơn.");
+      return false;
+    }
+
     const targetOrder = orders.find((o) => o.id === orderId);
     if (!targetOrder) return false;
 
@@ -321,12 +337,68 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  // 9. Quản lý eKYC Driver Onboarding
+  const submitDriverKyc = (data: Partial<DriverKycApplication>) => {
+    const newApp: DriverKycApplication = {
+      id: `kyc-${Date.now()}`,
+      driverId: driver.id,
+      driverName: data.driverName || driver.fullName,
+      phone: data.phone || driver.phoneNumber,
+      email: data.email || driver.email,
+      idCardNumber: data.idCardNumber || "001095018291",
+      idCardIssuedDate: data.idCardIssuedDate || "2022-05-12",
+      idCardFrontUrl: data.idCardFrontUrl || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400",
+      idCardBackUrl: data.idCardBackUrl || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400",
+      selfieUrl: data.selfieUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
+      driverLicenseNumber: data.driverLicenseNumber || "B2-998822",
+      driverLicenseClass: data.driverLicenseClass || "C",
+      driverLicenseExp: data.driverLicenseExp || "2029-10-15",
+      licenseFrontUrl: data.licenseFrontUrl || "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400",
+      truckPlate: data.truckPlate || "29C-998.88",
+      truckType: data.truckType || "Xe tải mui bạt 8 tấn",
+      truckWeightTon: data.truckWeightTon || 8,
+      registrationCertUrl: data.registrationCertUrl || "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400",
+      bankName: data.bankName || "Vietcombank",
+      bankAccountNumber: data.bankAccountNumber || "9988776655",
+      bankAccountHolder: (data.driverName || driver.fullName).toUpperCase(),
+      status: "PENDING",
+      submittedAt: new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) + " hôm nay",
+      ...data,
+    };
+
+    setKycApplications((prev) => [newApp, ...prev]);
+    setDriver((prev) => ({ ...prev, kycStatus: "PENDING" }));
+    showToast("Hồ sơ eKYC CCCD & Phương tiện đã gửi thành công! Đang chờ Ban Quản Trị thẩm định.");
+  };
+
+  const approveDriverKyc = (appId: string) => {
+    setKycApplications((prev) =>
+      prev.map((app) => (app.id === appId ? { ...app, status: "VERIFIED", reviewedAt: "Vừa xong" } : app))
+    );
+    setDriver((prev) => ({ ...prev, kycStatus: "VERIFIED" }));
+    showToast("Đã phê duyệt eKYC thành công! Tài khoản tài xế đã được kích hoạt chạy đơn.");
+  };
+
+  const rejectDriverKyc = (appId: string, reason?: string) => {
+    setKycApplications((prev) =>
+      prev.map((app) => (app.id === appId ? { ...app, status: "REJECTED", reviewNotes: reason || "Ảnh giấy tờ bị mờ", reviewedAt: "Vừa xong" } : app))
+    );
+    setDriver((prev) => ({ ...prev, kycStatus: "REJECTED" }));
+    showToast("Đã từ chối hồ sơ eKYC. Đã gửi yêu cầu chụp lại ảnh CCCD.");
+  };
+
+  const switchDriverAccountStatus = (status: KycStatus) => {
+    setDriver((prev) => ({ ...prev, kycStatus: status }));
+    showToast(`Đã chuyển trạng thái tài xế: ${status === "VERIFIED" ? "ĐÃ DUYỆT (Nhận chuyến bình thường)" : status === "PENDING" ? "CHỜ DUYỆT (Khóa nhận chuyến)" : "CHƯA NỘP HỒ SƠ"}`);
+  };
+
   return (
     <AppContext.Provider
       value={{
         role,
         setRole,
-        driver: initialDriver,
+        driver,
+        setDriver,
         shipper: initialShipper,
         orders,
         returnTrips,
@@ -335,6 +407,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setActiveTab,
         selectedOrder,
         setSelectedOrder,
+        kycApplications,
+        submitDriverKyc,
+        approveDriverKyc,
+        rejectDriverKyc,
+        switchDriverAccountStatus,
         createOrder,
         acceptOrderAndLockDeposit,
         payEscrow,

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
 import { formatVND } from "@/lib/currency";
+import { DriverKycModal } from "@/components/DriverKycModal";
 import {
   ArrowLeft,
   MapPin,
@@ -12,6 +13,7 @@ import {
   Building2,
   Phone,
   ShieldCheck,
+  ShieldAlert,
   CheckCircle2,
   AlertCircle,
   MessageSquare,
@@ -25,6 +27,7 @@ export const OrderDetailView: React.FC = () => {
   const {
     selectedOrder,
     role,
+    driver,
     setActiveTab,
     acceptOrderAndLockDeposit,
     payEscrow,
@@ -34,6 +37,7 @@ export const OrderDetailView: React.FC = () => {
 
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [showEscrowPayModal, setShowEscrowPayModal] = useState(false);
+  const [showKycModal, setShowKycModal] = useState(false);
 
   if (!selectedOrder) {
     return (
@@ -239,6 +243,15 @@ export const OrderDetailView: React.FC = () => {
                   <CheckCircle2 className="w-4 h-4" />
                   Bạn đã khóa cọc đơn này
                 </button>
+              ) : driver.kycStatus !== "VERIFIED" ? (
+                <button
+                  onClick={() => setShowKycModal(true)}
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
+                  title="Tài khoản chưa hoàn tất phê duyệt eKYC CCCD"
+                >
+                  <ShieldAlert className="w-4 h-4 text-slate-950" />
+                  Khóa nhận đơn ({driver.kycStatus === "PENDING" ? "Hồ sơ chờ duyệt" : "Chưa duyệt eKYC"})
+                </button>
               ) : (
                 <button
                   onClick={() => setShowDepositModal(true)}
@@ -368,6 +381,12 @@ export const OrderDetailView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Modal eKYC CCCD */}
+      <DriverKycModal
+        isOpen={showKycModal}
+        onClose={() => setShowKycModal(false)}
+      />
     </div>
   );
 };

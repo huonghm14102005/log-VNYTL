@@ -17,7 +17,17 @@ import ShieldCheckRoundedIcon from "@mui/icons-material/ShieldRounded";
 import DirectionsCarRoundedIcon from "@mui/icons-material/DirectionsCarRounded";
 
 export const AdminView: React.FC = () => {
-  const { showToast, orders, activeTab, setActiveTab } = useApp();
+  const { 
+    showToast, 
+    orders, 
+    activeTab, 
+    setActiveTab, 
+    kycApplications, 
+    approveDriverKyc, 
+    rejectDriverKyc 
+  } = useApp();
+
+  const pendingKycCount = kycApplications.filter((a) => a.status === "PENDING").length;
 
   const isEkycTab = activeTab === "admin-ekyc";
   const isEscrowTab = activeTab === "admin-escrow";
@@ -66,7 +76,9 @@ export const AdminView: React.FC = () => {
         >
           <VerifiedUserRoundedIcon className="!w-4 !h-4" />
           Duyệt eKYC CCCD
-          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-800">1</span>
+          <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-800">
+            {pendingKycCount}
+          </span>
         </button>
 
         <button
@@ -115,8 +127,10 @@ export const AdminView: React.FC = () => {
 
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs card-hover">
             <p className="text-xs font-semibold text-slate-500 mb-1">Hồ sơ eKYC CCCD chờ thẩm định</p>
-            <h3 className="text-2xl font-extrabold text-amber-500">1 hồ sơ mới</h3>
-            <p className="text-xs text-slate-400 mt-1">Đối tác xe tải tuyến Hà Nội - Hải Phòng</p>
+            <h3 className="text-2xl font-extrabold text-amber-500">
+              {pendingKycCount} hồ sơ mới
+            </h3>
+            <p className="text-xs text-slate-400 mt-1">Yêu cầu xác thực CCCD gắn chip & xe tải</p>
           </div>
         </div>
       )}
@@ -125,56 +139,93 @@ export const AdminView: React.FC = () => {
       {(isAllTab || isEkycTab) && (
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <VerifiedUserRoundedIcon className="!w-5 !h-5 text-amber-600" />
-              Thẩm định hồ sơ đối tác eKYC CCCD & Giấy phép vận tải
-            </h3>
-            <span className="text-xs text-slate-400 font-semibold">Quy trình 7 bước tiêu chuẩn</span>
+            <div>
+              <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                <VerifiedUserRoundedIcon className="!w-5 !h-5 text-amber-600" />
+                Thẩm định hồ sơ đối tác eKYC CCCD & Giấy phép vận tải
+              </h3>
+              <p className="text-xs text-slate-400">
+                Đối chiếu sinh trắc học CCCD, Bằng lái Tổng cục Đường bộ & Đăng kiểm xe
+              </p>
+            </div>
+            <span className="text-xs text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full font-bold border border-amber-200">
+              {pendingKycCount} hồ sơ chờ duyệt
+            </span>
           </div>
 
-          <div className="border border-slate-200/90 rounded-2xl p-5 bg-slate-50 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-            <div className="flex items-start gap-4">
-              <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80"
-                alt="Avatar"
-                className="w-16 h-16 rounded-2xl object-cover border-2 border-slate-300 shrink-0 shadow-2xs"
-              />
-              <div className="space-y-1 text-xs">
-                <div className="flex items-center gap-2">
-                  <h4 className="font-extrabold text-slate-900 text-sm">Lê Hoàng Nam</h4>
-                  <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-bold">Tài xế mới</span>
+          <div className="space-y-3">
+            {kycApplications.map((app) => (
+              <div
+                key={app.id}
+                className="border border-slate-200/90 rounded-2xl p-5 bg-slate-50 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 hover:bg-slate-50/80 transition-all"
+              >
+                <div className="flex items-start gap-4">
+                  <img
+                    src={app.selfieUrl}
+                    alt={app.driverName}
+                    className="w-16 h-16 rounded-2xl object-cover border-2 border-slate-300 shrink-0 shadow-2xs"
+                  />
+                  <div className="space-y-1 text-xs">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-extrabold text-slate-900 text-sm">{app.driverName}</h4>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                        app.status === "PENDING"
+                          ? "bg-amber-100 text-amber-800"
+                          : app.status === "VERIFIED"
+                          ? "bg-emerald-100 text-emerald-800"
+                          : "bg-red-100 text-red-800"
+                      }`}>
+                        {app.status === "PENDING" ? "Chờ duyệt CCCD" : app.status === "VERIFIED" ? "Đã duyệt" : "Từ chối"}
+                      </span>
+                    </div>
+                    <p className="text-slate-600">
+                      <strong>CCCD:</strong> {app.idCardNumber} · <strong>GPLX:</strong> Hạng {app.driverLicenseClass} (Số {app.driverLicenseNumber})
+                    </p>
+                    <p className="text-slate-600">
+                      <strong>Phương tiện:</strong> {app.truckType} (BKS: {app.truckPlate}) · Tải trọng: {app.truckWeightTon} tấn
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      <span className="inline-flex items-center gap-1 text-emerald-700 font-bold bg-emerald-100/80 px-2.5 py-0.5 rounded-md text-[10px]">
+                        <CheckCircleRoundedIcon className="!w-3.5 !h-3.5" /> Đối chiếu sinh trắc học: Khớp 99.4%
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-blue-700 font-bold bg-blue-100/80 px-2.5 py-0.5 rounded-md text-[10px]">
+                        {app.bankName} - {app.bankAccountNumber}
+                      </span>
+                      <span className="text-[10px] text-slate-400">
+                        Nộp lúc: {app.submittedAt}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-slate-600">
-                  <strong>CCCD:</strong> 031089004512 · <strong>GPLX:</strong> Hạng C (5 năm kinh nghiệm)
-                </p>
-                <p className="text-slate-600">
-                  <strong>Phương tiện:</strong> Xe tải thùng 8 tấn (Biển số: 29C-987.65)
-                </p>
-                <div className="flex items-center gap-3 pt-1">
-                  <span className="inline-flex items-center gap-1 text-emerald-700 font-bold bg-emerald-100/80 px-2.5 py-0.5 rounded-md text-[10px]">
-                    <CheckCircleRoundedIcon className="!w-3.5 !h-3.5" /> Đối chiếu sinh trắc học CCCD: Khớp 97%
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-blue-700 font-bold bg-blue-100/80 px-2.5 py-0.5 rounded-md text-[10px]">
-                    STK chính chủ Techcombank
-                  </span>
+
+                <div className="flex items-center gap-2 w-full md:w-auto justify-end pt-3 md:pt-0 border-t md:border-t-0 border-slate-200">
+                  {app.status === "PENDING" ? (
+                    <>
+                      <button
+                        onClick={() => rejectDriverKyc(app.id, "Ảnh CCCD bị mờ hoặc giấy tờ chưa khớp")}
+                        className="px-4 py-2 rounded-xl border border-red-200 text-red-600 text-xs font-bold hover:bg-red-50 flex items-center gap-1 transition-all"
+                      >
+                        <CancelRoundedIcon className="!w-4 !h-4" /> Từ chối
+                      </button>
+                      <button
+                        onClick={() => approveDriverKyc(app.id)}
+                        className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 flex items-center gap-1 transition-all"
+                      >
+                        <CheckCircleRoundedIcon className="!w-4 !h-4" /> Phê duyệt 1 chạm
+                      </button>
+                    </>
+                  ) : app.status === "VERIFIED" ? (
+                    <span className="inline-flex items-center gap-1 text-emerald-700 font-bold bg-emerald-100 px-3 py-1.5 rounded-xl text-xs">
+                      <CheckCircleRoundedIcon className="!w-4 !h-4" /> Đã kích hoạt chạy đơn
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 text-red-700 font-bold bg-red-100 px-3 py-1.5 rounded-xl text-xs">
+                      <CancelRoundedIcon className="!w-4 !h-4" /> Đã từ chối hồ sơ
+                    </span>
+                  )}
                 </div>
               </div>
-            </div>
-
-            <div className="flex items-center gap-2 w-full md:w-auto justify-end pt-3 md:pt-0 border-t md:border-t-0 border-slate-200">
-              <button
-                onClick={() => showToast("Đã từ chối hồ sơ (Yêu cầu tài xế chụp lại ảnh đăng kiểm còn hạn).")}
-                className="px-4 py-2.5 rounded-xl border border-red-200 text-red-600 text-xs font-bold hover:bg-red-50 flex items-center gap-1 transition-all"
-              >
-                <CancelRoundedIcon className="!w-4 !h-4" /> Từ chối
-              </button>
-              <button
-                onClick={() => showToast("Đã phê duyệt và kích hoạt tài khoản đối tác Tài xế thành công!")}
-                className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 flex items-center gap-1 transition-all"
-              >
-                <CheckCircleRoundedIcon className="!w-4 !h-4" /> Phê duyệt 1 chạm
-              </button>
-            </div>
+            ))}
           </div>
         </div>
       )}
