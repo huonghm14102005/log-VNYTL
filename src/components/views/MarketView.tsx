@@ -28,8 +28,16 @@ export const MarketView: React.FC = () => {
   const [toCity, setToCity] = useState("Hà Nội");
   const [filterType, setFilterType] = useState<"ALL" | "AI_MATCHED" | "URGENT">("ALL");
   const [weightLimit, setWeightLimit] = useState(15);
+  
+  // State Loại hàng
+  const [isContainerCargo, setIsContainerCargo] = useState(false);
+  const [containerTypes, setContainerTypes] = useState<string[]>(["Cont 40ft HC (Cao)"]);
+  const [isOtherCargo, setIsOtherCargo] = useState(false);
+  const [otherCargoText, setOtherCargoText] = useState("");
+
+  // State Loại xe chuyên dụng
   const [isSpecialized, setIsSpecialized] = useState(false);
-  const [specializedTypes, setSpecializedTypes] = useState<string[]>(["❄️ Xe đông lạnh (-18°C)"]);
+  const [specializedTypes, setSpecializedTypes] = useState<string[]>(["🛢️ Xe bồn (Xitec)"]);
   const [specializedNote, setSpecializedNote] = useState("");
 
   const filteredOrders = orders.filter((order) => {
@@ -166,27 +174,111 @@ export const MarketView: React.FC = () => {
             </button>
           </div>
 
-          {/* Loại hàng */}
-          <div className="space-y-2">
-            <p className="text-xs font-bold text-slate-700">Loại hàng</p>
-            {[
-              "Hàng tiêu dùng bách hóa",
-              "Máy móc công nghiệp",
-              "Vật liệu xây dựng",
-              "Nông sản & Thực phẩm",
-              "Hàng xuất nhập khẩu",
-            ].map((label, i) => (
-              <label key={i} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 cursor-pointer">
-                <input type="checkbox" defaultChecked={i < 2} className="rounded text-blue-600 focus:ring-0" />
-                <span>{label}</span>
+          {/* 1. Nhóm Bộ lọc: Loại hàng */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-bold text-slate-800">Loại hàng hóa</p>
+              <span className="text-[10px] text-slate-400">Đa chọn</span>
+            </div>
+
+            <div className="space-y-2">
+              {[
+                { id: "fmcg", label: "Hàng tiêu dùng bách hóa" },
+                { id: "machinery", label: "Máy móc thiết bị công nghiệp" },
+                { id: "building", label: "Vật liệu xây dựng" },
+                { id: "agri", label: "Nông sản & Thực phẩm" },
+              ].map((cargo) => (
+                <label key={cargo.id} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 cursor-pointer">
+                  <input type="checkbox" defaultChecked={cargo.id === "fmcg"} className="rounded text-blue-600 focus:ring-0" />
+                  <span>{cargo.label}</span>
+                </label>
+              ))}
+
+              {/* Tùy chọn Hàng đóng Container (FCL) */}
+              <label className="flex items-center gap-2.5 text-xs font-bold text-blue-900 hover:text-blue-700 cursor-pointer pt-0.5">
+                <input 
+                  type="checkbox" 
+                  checked={isContainerCargo}
+                  onChange={(e) => setIsContainerCargo(e.target.checked)}
+                  className="rounded text-blue-600 focus:ring-0" 
+                />
+                <span className="flex items-center gap-1.5">
+                  📦 Hàng đóng Container (FCL)
+                  <span className="px-1.5 py-0.2 rounded text-[9px] bg-blue-100 text-blue-700 font-extrabold">+ Quy cách Cont</span>
+                </span>
               </label>
-            ))}
+
+              {/* Khung quy cách Container mở rộng khi tích chọn */}
+              {isContainerCargo && (
+                <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3 space-y-2 animate-fadeIn mt-1.5">
+                  <p className="text-[11px] font-bold text-blue-950 flex items-center justify-between">
+                    <span>Quy cách vỏ Container:</span>
+                    <span className="text-[10px] text-blue-600 font-normal">Chọn loại Cont</span>
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      "Cont 20 feet (20ft)",
+                      "Cont 40 feet DC (Tiêu chuẩn)",
+                      "Cont 40 feet HC (Cao)",
+                      "Cont Lạnh (RF)",
+                      "Kéo vỏ Cont rỗng",
+                    ].map((cType) => {
+                      const isSel = containerTypes.includes(cType);
+                      return (
+                        <button
+                          key={cType}
+                          type="button"
+                          onClick={() => {
+                            if (isSel) {
+                              setContainerTypes(containerTypes.filter((t) => t !== cType));
+                            } else {
+                              setContainerTypes([...containerTypes, cType]);
+                            }
+                          }}
+                          className={`text-[10px] px-2 py-1 rounded-lg font-semibold transition-all ${
+                            isSel
+                              ? "bg-blue-600 text-white shadow-2xs"
+                              : "bg-white text-slate-700 border border-blue-200 hover:border-blue-400"
+                          }`}
+                        >
+                          {cType}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Tùy chọn Loại hàng Khác */}
+              <label className="flex items-center gap-2.5 text-xs font-semibold text-slate-700 hover:text-slate-900 cursor-pointer pt-0.5">
+                <input 
+                  type="checkbox" 
+                  checked={isOtherCargo}
+                  onChange={(e) => setIsOtherCargo(e.target.checked)}
+                  className="rounded text-blue-600 focus:ring-0" 
+                />
+                <span>Hàng đặc thù khác...</span>
+              </label>
+
+              {/* Ô nhập tên hàng khác khi tích chọn */}
+              {isOtherCargo && (
+                <div className="animate-fadeIn mt-1">
+                  <input
+                    type="text"
+                    value={otherCargoText}
+                    onChange={(e) => setOtherCargoText(e.target.value)}
+                    placeholder="Ghi rõ tên hàng (VD: Hóa chất, đồ gỗ mỹ nghệ, phế liệu...)"
+                    className="w-full text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder:text-slate-400 font-medium"
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Loại xe duy nhất & Xe chuyên dụng mở rộng */}
+          {/* 2. Nhóm Bộ lọc: Loại xe (Quy cách phương tiện) */}
           <div className="space-y-3 border-t border-slate-100 pt-4">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-bold text-slate-700">Quy cách phương tiện</p>
+              <p className="text-xs font-bold text-slate-800">Quy cách phương tiện</p>
               <span className="text-[10px] text-slate-400">Đa chọn</span>
             </div>
 
@@ -194,7 +286,7 @@ export const MarketView: React.FC = () => {
               {[
                 { id: "box", label: "Xe tải thùng kín (Chống nước)" },
                 { id: "tarpaulin", label: "Xe tải mui bạt (Linh hoạt)" },
-                { id: "container", label: "Xe Container (20ft / 40ft)" },
+                { id: "tractor", label: "Xe đầu kéo (Kéo sơ mi rơ-moóc / Container)" },
               ].map((truck) => (
                 <label key={truck.id} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 cursor-pointer">
                   <input type="checkbox" defaultChecked={truck.id === "box"} className="rounded text-blue-600 focus:ring-0" />
@@ -202,38 +294,36 @@ export const MarketView: React.FC = () => {
                 </label>
               ))}
 
-              {/* Tùy chọn Xe chuyên dụng đặc thù */}
-              <label className="flex items-center gap-2.5 text-xs font-bold text-blue-900 hover:text-blue-700 cursor-pointer pt-1">
+              {/* Tùy chọn Xe chuyên dụng */}
+              <label className="flex items-center gap-2.5 text-xs font-bold text-blue-900 hover:text-blue-700 cursor-pointer pt-0.5">
                 <input 
                   type="checkbox" 
                   checked={isSpecialized}
                   onChange={(e) => setIsSpecialized(e.target.checked)}
                   className="rounded text-blue-600 focus:ring-0" 
                 />
-                <span className="flex items-center gap-1">
-                  Xe chuyên dụng đặc thù
+                <span className="flex items-center gap-1.5">
+                  Xe chuyên dụng (Xe bồn, Xe moóc...)
                   <span className="px-1.5 py-0.2 rounded text-[9px] bg-blue-100 text-blue-700 font-extrabold">+ Chi tiết</span>
                 </span>
               </label>
             </div>
 
-            {/* Khung cấu hình chi tiết xe chuyên dụng khi được tích chọn */}
+            {/* Khung cấu hình chi tiết xe chuyên dụng (Xe bồn, Xe mooc) */}
             {isSpecialized && (
               <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3 space-y-2.5 animate-fadeIn mt-2">
                 <p className="text-[11px] font-bold text-blue-950 flex items-center justify-between">
-                  <span>Yêu cầu xe chuyên dụng:</span>
-                  <span className="text-[10px] text-blue-600 font-normal">Chọn & ghi chú</span>
+                  <span>Dòng xe chuyên dụng:</span>
+                  <span className="text-[10px] text-blue-600 font-normal">Chọn cấu hình</span>
                 </p>
 
-                {/* Các chip lựa chọn nhanh dòng xe chuyên dụng */}
+                {/* Các lựa chọn: Xe bồn, Xe moóc, v.v. */}
                 <div className="flex flex-wrap gap-1.5">
                   {[
+                    "🛢️ Xe bồn (Xitec chất lỏng/xăng dầu/hóa chất)",
+                    "🚜 Xe moóc (Moóc lùn / Moóc sàn / Moóc ben)",
+                    "🏗️ Xe cẩu tự hành",
                     "❄️ Xe đông lạnh (-18°C)",
-                    "🛢️ Bồn xitec chất lỏng",
-                    "🏗️ Cẩu tự hành",
-                    "🚜 Moóc lùn siêu trường",
-                    "🚗 Lồng chở ô tô",
-                    "🚚 Có bửng nâng hạ",
                   ].map((subType) => {
                     const isSelected = specializedTypes.includes(subType);
                     return (
@@ -259,16 +349,16 @@ export const MarketView: React.FC = () => {
                   })}
                 </div>
 
-                {/* Ô nhập thông số chi tiết */}
+                {/* Ô nhập thông số chi tiết cho xe bồn / xe mooc */}
                 <div>
                   <label className="block text-[10px] font-semibold text-slate-600 mb-1">
-                    Ghi chú yêu cầu kỹ thuật:
+                    Ghi rõ yêu cầu xe bồn / xe moóc:
                   </label>
                   <input
                     type="text"
                     value={specializedNote}
                     onChange={(e) => setSpecializedNote(e.target.value)}
-                    placeholder="VD: Duy trì -15°C, cần bửng nâng 2 tấn..."
+                    placeholder="VD: Xe moóc lùn chở máy 40 tấn, Xe bồn inox 15m³ chở sữa tươi..."
                     className="w-full text-xs bg-white border border-blue-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder:text-slate-400 font-medium"
                   />
                 </div>
