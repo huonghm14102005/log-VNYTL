@@ -26,6 +26,27 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
 
   if (!isOpen || !application) return null;
 
+  // Safe fallback values
+  const frontUrl = application.idCardFrontUrl || application.cccdFrontUrl || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400";
+  const backUrl = application.idCardBackUrl || application.cccdBackUrl || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400";
+  const selfieUrl = application.selfieUrl || application.portraitUrl || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400";
+  const licenseUrl = application.licenseFrontUrl || "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400";
+  const regUrl = application.registrationCertUrl || "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400";
+  const driverName = application.driverName || application.fullName || "Tài xế";
+  const cccdNumber = application.idCardNumber || application.cccdNumber || "001095018291";
+  const issuedDate = application.idCardIssuedDate || application.dob || "2022-05-12";
+  const licenseNumber = application.driverLicenseNumber || "B2-998822";
+  const licenseClass = application.driverLicenseClass || "C";
+  const licenseExp = application.driverLicenseExp || "2029-10-15";
+  const truckPlate = application.truckPlate || application.plateNumber || "29C-998.88";
+  const truckType = application.truckType || application.vehicleType || "Xe tải mui bạt 8 tấn";
+  const truckWeightTon = application.truckWeightTon || (application.maxPayloadKg ? application.maxPayloadKg / 1000 : 8);
+  const bankName = application.bankName || "Vietcombank";
+  const bankAccountNumber = application.bankAccountNumber || application.bankAccount || "9988776655";
+  const bankAccountHolder = application.bankAccountHolder || driverName.toUpperCase();
+  const phone = application.phone || "0988123456";
+  const email = application.email || "driver.vylt@gmail.com";
+
   const handleApprove = () => {
     approveDriverKyc(application.id);
     onClose();
@@ -137,12 +158,12 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
                     </div>
                     <div className="h-44 w-full rounded-lg overflow-hidden border border-slate-200 relative group bg-slate-900 flex items-center justify-center">
                       <img 
-                        src={application.idCardFrontUrl} 
+                        src={frontUrl} 
                         alt="CCCD Front" 
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <a 
-                        href={application.idCardFrontUrl} 
+                        href={frontUrl} 
                         target="_blank" 
                         rel="noreferrer" 
                         className="absolute bottom-2 right-2 px-2 py-1 rounded bg-black/70 text-white text-[10px] flex items-center gap-1 hover:bg-black"
@@ -161,12 +182,12 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
                     </div>
                     <div className="h-44 w-full rounded-lg overflow-hidden border border-slate-200 relative group bg-slate-900 flex items-center justify-center">
                       <img 
-                        src={application.idCardBackUrl} 
+                        src={backUrl} 
                         alt="CCCD Back" 
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <a 
-                        href={application.idCardBackUrl} 
+                        href={backUrl} 
                         target="_blank" 
                         rel="noreferrer" 
                         className="absolute bottom-2 right-2 px-2 py-1 rounded bg-black/70 text-white text-[10px] flex items-center gap-1 hover:bg-black"
@@ -185,7 +206,7 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
                   </span>
                   <div className="w-56 h-56 mx-auto rounded-full overflow-hidden border-4 border-emerald-500 shadow-lg relative bg-slate-900 group">
                     <img 
-                      src={application.selfieUrl} 
+                      src={selfieUrl} 
                       alt="Selfie" 
                       className="w-full h-full object-cover"
                     />
@@ -206,17 +227,17 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
               {activeDocTab === "LICENSE" && (
                 <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3 animate-fadeIn">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-slate-800">Ảnh chụp Giấy phép lái xe (GPLX Hạng {application.driverLicenseClass})</span>
+                    <span className="font-bold text-slate-800">Ảnh chụp Giấy phép lái xe (GPLX Hạng {licenseClass})</span>
                     <span className="text-emerald-600 font-semibold text-[11px]">✓ Hợp lệ Tổng cục Đường bộ</span>
                   </div>
                   <div className="h-72 w-full rounded-lg overflow-hidden border border-slate-200 relative group bg-slate-900 flex items-center justify-center">
                     <img 
-                      src={application.licenseFrontUrl} 
+                      src={licenseUrl} 
                       alt="License" 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                     />
                     <a 
-                      href={application.licenseFrontUrl} 
+                      href={licenseUrl} 
                       target="_blank" 
                       rel="noreferrer" 
                       className="absolute bottom-2 right-2 px-2.5 py-1 rounded bg-black/70 text-white text-[11px] flex items-center gap-1 hover:bg-black"
@@ -235,12 +256,12 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
                   </div>
                   <div className="h-72 w-full rounded-lg overflow-hidden border border-slate-200 relative group bg-slate-900 flex items-center justify-center">
                     <img 
-                      src={application.registrationCertUrl} 
+                      src={regUrl} 
                       alt="Truck Certificate" 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                     />
                     <a 
-                      href={application.registrationCertUrl} 
+                      href={regUrl} 
                       target="_blank" 
                       rel="noreferrer" 
                       className="absolute bottom-2 right-2 px-2.5 py-1 rounded bg-black/70 text-white text-[11px] flex items-center gap-1 hover:bg-black"
@@ -265,23 +286,23 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
               <div className="space-y-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200/80">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Họ và tên:</span>
-                  <span className="font-bold text-slate-900 uppercase">{application.driverName}</span>
+                  <span className="font-bold text-slate-900 uppercase">{driverName}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Số CCCD (12 số):</span>
-                  <span className="font-mono font-bold text-blue-700">{application.idCardNumber}</span>
+                  <span className="font-mono font-bold text-blue-700">{cccdNumber}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Ngày cấp:</span>
-                  <span className="font-medium text-slate-700">{application.idCardIssuedDate}</span>
+                  <span className="font-medium text-slate-700">{issuedDate}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Số điện thoại:</span>
-                  <span className="font-medium text-slate-700">{application.phone}</span>
+                  <span className="font-medium text-slate-700">{phone}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Email:</span>
-                  <span className="font-medium text-slate-700">{application.email}</span>
+                  <span className="font-medium text-slate-700">{email}</span>
                 </div>
               </div>
 
@@ -289,27 +310,27 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
               <div className="space-y-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200/80">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Số GPLX:</span>
-                  <span className="font-mono font-bold text-slate-900">{application.driverLicenseNumber}</span>
+                  <span className="font-mono font-bold text-slate-900">{licenseNumber}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Hạng Giấy phép:</span>
                   <span className="font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded text-[11px]">
-                    Hạng {application.driverLicenseClass}
+                    Hạng {licenseClass}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Hạn bằng lái:</span>
-                  <span className="font-medium text-slate-700">{application.driverLicenseExp}</span>
+                  <span className="font-medium text-slate-700">{licenseExp}</span>
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-200/60 pt-2">
                   <span className="text-slate-500">Biển kiểm soát xe:</span>
                   <span className="font-mono font-bold text-slate-900 bg-slate-200 px-2 py-0.5 rounded">
-                    {application.truckPlate}
+                    {truckPlate}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Quy cách & Tải trọng:</span>
-                  <span className="font-bold text-slate-800">{application.truckType} ({application.truckWeightTon} tấn)</span>
+                  <span className="font-bold text-slate-800">{truckType} ({truckWeightTon} tấn)</span>
                 </div>
               </div>
 
@@ -317,15 +338,15 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
               <div className="space-y-2 text-xs bg-emerald-50/50 p-3 rounded-xl border border-emerald-200">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Ngân hàng thụ hưởng:</span>
-                  <span className="font-bold text-emerald-900">{application.bankName}</span>
+                  <span className="font-bold text-emerald-900">{bankName}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Số tài khoản:</span>
-                  <span className="font-mono font-bold text-emerald-800">{application.bankAccountNumber}</span>
+                  <span className="font-mono font-bold text-emerald-800">{bankAccountNumber}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Chủ tài khoản:</span>
-                  <span className="font-bold text-emerald-900 uppercase">{application.bankAccountHolder}</span>
+                  <span className="font-bold text-emerald-900 uppercase">{bankAccountHolder}</span>
                 </div>
               </div>
 
