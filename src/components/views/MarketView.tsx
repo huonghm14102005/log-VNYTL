@@ -28,6 +28,9 @@ export const MarketView: React.FC = () => {
   const [toCity, setToCity] = useState("Hà Nội");
   const [filterType, setFilterType] = useState<"ALL" | "AI_MATCHED" | "URGENT">("ALL");
   const [weightLimit, setWeightLimit] = useState(15);
+  const [isSpecialized, setIsSpecialized] = useState(false);
+  const [specializedTypes, setSpecializedTypes] = useState<string[]>(["❄️ Xe đông lạnh (-18°C)"]);
+  const [specializedNote, setSpecializedNote] = useState("");
 
   const filteredOrders = orders.filter((order) => {
     if (filterType === "AI_MATCHED" && !order.isReturnTripMatch) return false;
@@ -72,19 +75,19 @@ export const MarketView: React.FC = () => {
           </div>
         </div>
 
-        {/* Input Bar 4 fields matching image1.png */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+        {/* Input Bar 3 core logistics fields */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div className="relative">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-              Điểm đi
+              Điểm đi (Lấy hàng)
             </span>
             <div className="relative">
-              <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <MapPin className="w-4 h-4 text-blue-600 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={fromCity}
                 onChange={(e) => setFromCity(e.target.value)}
-                placeholder="Hải Phòng..."
+                placeholder="Hải Phòng, Cảng Đình Vũ..."
                 className="w-full bg-slate-50 text-sm font-semibold text-slate-800 pl-9 pr-3 py-2 rounded-xl border border-slate-200 focus:border-blue-500 focus:bg-white focus:outline-none"
               />
             </div>
@@ -92,15 +95,15 @@ export const MarketView: React.FC = () => {
 
           <div className="relative">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-              Điểm đến
+              Điểm đến (Giao hàng)
             </span>
             <div className="relative">
-              <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <MapPin className="w-4 h-4 text-emerald-600 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={toCity}
                 onChange={(e) => setToCity(e.target.value)}
-                placeholder="Hà Nội..."
+                placeholder="Hà Nội, Bắc Ninh..."
                 className="w-full bg-slate-50 text-sm font-semibold text-slate-800 pl-9 pr-3 py-2 rounded-xl border border-slate-200 focus:border-blue-500 focus:bg-white focus:outline-none"
               />
             </div>
@@ -108,25 +111,17 @@ export const MarketView: React.FC = () => {
 
           <div>
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-              Loại xe
+              Thời gian khởi hành
             </span>
-            <select className="w-full bg-slate-50 text-sm font-semibold text-slate-800 px-3 py-2 rounded-xl border border-slate-200 focus:border-blue-500 focus:outline-none">
-              <option>Tất cả các loại xe</option>
-              <option>Xe tải thùng kín</option>
-              <option>Xe tải mui bạt</option>
-              <option>Xe Container</option>
-            </select>
-          </div>
-
-          <div>
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-              Thời gian
-            </span>
-            <select className="w-full bg-slate-50 text-sm font-semibold text-slate-800 px-3 py-2 rounded-xl border border-slate-200 focus:border-blue-500 focus:outline-none">
-              <option>Trong 7 ngày</option>
-              <option>Hôm nay (Gấp)</option>
-              <option>Ngày mai</option>
-            </select>
+            <div className="relative">
+              <Calendar className="w-4 h-4 text-amber-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <select className="w-full bg-slate-50 text-sm font-semibold text-slate-800 pl-9 pr-3 py-2 rounded-xl border border-slate-200 focus:border-blue-500 focus:outline-none cursor-pointer">
+                <option>Trong 7 ngày tới</option>
+                <option>Hôm nay (Cần đi gấp)</option>
+                <option>Ngày mai</option>
+                <option>Cuối tuần này</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -137,6 +132,8 @@ export const MarketView: React.FC = () => {
               setFromCity("");
               setToCity("");
               setFilterType("ALL");
+              setIsSpecialized(false);
+              setSpecializedNote("");
             }}
             className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-4 py-2 rounded-xl hover:bg-slate-100 transition-all"
           >
@@ -144,7 +141,7 @@ export const MarketView: React.FC = () => {
             Đặt lại
           </button>
           <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-6 py-2 rounded-xl shadow-sm transition-all">
-            Tìm kiếm
+            Tìm kiếm chuyến
           </button>
         </div>
       </div>
@@ -156,22 +153,28 @@ export const MarketView: React.FC = () => {
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-blue-600" />
-              Bộ lọc
+              Bộ lọc nâng cao
             </h3>
-            <span className="text-xs font-semibold text-blue-600 hover:underline cursor-pointer">
+            <button
+              onClick={() => {
+                setIsSpecialized(false);
+                setSpecializedNote("");
+              }}
+              className="text-xs font-semibold text-blue-600 hover:underline cursor-pointer"
+            >
               Xóa lọc
-            </span>
+            </button>
           </div>
 
           {/* Loại hàng */}
           <div className="space-y-2">
             <p className="text-xs font-bold text-slate-700">Loại hàng</p>
             {[
-              "Hàng tiêu dùng",
-              "Máy móc thiết bị",
+              "Hàng tiêu dùng bách hóa",
+              "Máy móc công nghiệp",
               "Vật liệu xây dựng",
-              "Nông sản",
-              "Khác",
+              "Nông sản & Thực phẩm",
+              "Hàng xuất nhập khẩu",
             ].map((label, i) => (
               <label key={i} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 cursor-pointer">
                 <input type="checkbox" defaultChecked={i < 2} className="rounded text-blue-600 focus:ring-0" />
@@ -180,20 +183,97 @@ export const MarketView: React.FC = () => {
             ))}
           </div>
 
-          {/* Loại xe */}
-          <div className="space-y-2 border-t border-slate-100 pt-4">
-            <p className="text-xs font-bold text-slate-700">Loại xe</p>
-            {[
-              "Xe tải thùng",
-              "Container",
-              "Đầu kéo",
-              "Xe chuyên dụng",
-            ].map((label, i) => (
-              <label key={i} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 cursor-pointer">
-                <input type="checkbox" defaultChecked={i === 0} className="rounded text-blue-600 focus:ring-0" />
-                <span>{label}</span>
+          {/* Loại xe duy nhất & Xe chuyên dụng mở rộng */}
+          <div className="space-y-3 border-t border-slate-100 pt-4">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-bold text-slate-700">Quy cách phương tiện</p>
+              <span className="text-[10px] text-slate-400">Đa chọn</span>
+            </div>
+
+            <div className="space-y-2">
+              {[
+                { id: "box", label: "Xe tải thùng kín (Chống nước)" },
+                { id: "tarpaulin", label: "Xe tải mui bạt (Linh hoạt)" },
+                { id: "container", label: "Xe Container (20ft / 40ft)" },
+              ].map((truck) => (
+                <label key={truck.id} className="flex items-center gap-2.5 text-xs text-slate-600 hover:text-slate-900 cursor-pointer">
+                  <input type="checkbox" defaultChecked={truck.id === "box"} className="rounded text-blue-600 focus:ring-0" />
+                  <span>{truck.label}</span>
+                </label>
+              ))}
+
+              {/* Tùy chọn Xe chuyên dụng đặc thù */}
+              <label className="flex items-center gap-2.5 text-xs font-bold text-blue-900 hover:text-blue-700 cursor-pointer pt-1">
+                <input 
+                  type="checkbox" 
+                  checked={isSpecialized}
+                  onChange={(e) => setIsSpecialized(e.target.checked)}
+                  className="rounded text-blue-600 focus:ring-0" 
+                />
+                <span className="flex items-center gap-1">
+                  Xe chuyên dụng đặc thù
+                  <span className="px-1.5 py-0.2 rounded text-[9px] bg-blue-100 text-blue-700 font-extrabold">+ Chi tiết</span>
+                </span>
               </label>
-            ))}
+            </div>
+
+            {/* Khung cấu hình chi tiết xe chuyên dụng khi được tích chọn */}
+            {isSpecialized && (
+              <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3 space-y-2.5 animate-fadeIn mt-2">
+                <p className="text-[11px] font-bold text-blue-950 flex items-center justify-between">
+                  <span>Yêu cầu xe chuyên dụng:</span>
+                  <span className="text-[10px] text-blue-600 font-normal">Chọn & ghi chú</span>
+                </p>
+
+                {/* Các chip lựa chọn nhanh dòng xe chuyên dụng */}
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    "❄️ Xe đông lạnh (-18°C)",
+                    "🛢️ Bồn xitec chất lỏng",
+                    "🏗️ Cẩu tự hành",
+                    "🚜 Moóc lùn siêu trường",
+                    "🚗 Lồng chở ô tô",
+                    "🚚 Có bửng nâng hạ",
+                  ].map((subType) => {
+                    const isSelected = specializedTypes.includes(subType);
+                    return (
+                      <button
+                        key={subType}
+                        type="button"
+                        onClick={() => {
+                          if (isSelected) {
+                            setSpecializedTypes(specializedTypes.filter((t) => t !== subType));
+                          } else {
+                            setSpecializedTypes([...specializedTypes, subType]);
+                          }
+                        }}
+                        className={`text-[10px] px-2 py-1 rounded-lg font-semibold transition-all ${
+                          isSelected
+                            ? "bg-blue-600 text-white shadow-2xs"
+                            : "bg-white text-slate-700 border border-blue-200 hover:border-blue-400"
+                        }`}
+                      >
+                        {subType}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Ô nhập thông số chi tiết */}
+                <div>
+                  <label className="block text-[10px] font-semibold text-slate-600 mb-1">
+                    Ghi chú yêu cầu kỹ thuật:
+                  </label>
+                  <input
+                    type="text"
+                    value={specializedNote}
+                    onChange={(e) => setSpecializedNote(e.target.value)}
+                    placeholder="VD: Duy trì -15°C, cần bửng nâng 2 tấn..."
+                    className="w-full text-xs bg-white border border-blue-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder:text-slate-400 font-medium"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Trọng lượng slider */}
