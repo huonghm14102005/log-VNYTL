@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
+import { DriverKycApplication } from "@/types";
+import { AdminKycDetailModal } from "@/components/AdminKycDetailModal";
 import { formatVND } from "@/lib/currency";
 import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
 import VerifiedUserRoundedIcon from "@mui/icons-material/VerifiedUserRounded";
@@ -9,6 +11,7 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import NorthEastRoundedIcon from "@mui/icons-material/NorthEastRounded";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
+import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 
 import GavelRoundedIcon from "@mui/icons-material/GavelRounded";
 import AccountBalanceWalletRoundedIcon from "@mui/icons-material/AccountBalanceWalletRounded";
@@ -26,6 +29,9 @@ export const AdminView: React.FC = () => {
     approveDriverKyc, 
     rejectDriverKyc 
   } = useApp();
+
+  const [selectedKycApp, setSelectedKycApp] = useState<DriverKycApplication | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
 
   const pendingKycCount = kycApplications.filter((a) => a.status === "PENDING").length;
 
@@ -198,29 +204,41 @@ export const AdminView: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 w-full md:w-auto justify-end pt-3 md:pt-0 border-t md:border-t-0 border-slate-200">
+                <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end pt-3 md:pt-0 border-t md:border-t-0 border-slate-200">
+                  {/* Nút Xem chi tiết hồ sơ luôn hiển thị để Admin kiểm tra */}
+                  <button
+                    onClick={() => {
+                      setSelectedKycApp(app);
+                      setIsDetailModalOpen(true);
+                    }}
+                    className="px-3.5 py-2 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold flex items-center gap-1.5 transition-all shadow-2xs"
+                    title="Mở hồ sơ xem ảnh CCCD 2 mặt, sinh trắc học và giấy tờ xe"
+                  >
+                    <VisibilityRoundedIcon className="!w-4 !h-4" /> Xem hồ sơ
+                  </button>
+
                   {app.status === "PENDING" ? (
                     <>
                       <button
                         onClick={() => rejectDriverKyc(app.id, "Ảnh CCCD bị mờ hoặc giấy tờ chưa khớp")}
-                        className="px-4 py-2 rounded-xl border border-red-200 text-red-600 text-xs font-bold hover:bg-red-50 flex items-center gap-1 transition-all"
+                        className="px-3.5 py-2 rounded-xl border border-red-200 text-red-600 text-xs font-bold hover:bg-red-50 flex items-center gap-1 transition-all"
                       >
                         <CancelRoundedIcon className="!w-4 !h-4" /> Từ chối
                       </button>
                       <button
                         onClick={() => approveDriverKyc(app.id)}
-                        className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 flex items-center gap-1 transition-all"
+                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 flex items-center gap-1 transition-all"
                       >
-                        <CheckCircleRoundedIcon className="!w-4 !h-4" /> Phê duyệt 1 chạm
+                        <CheckCircleRoundedIcon className="!w-4 !h-4" /> Duyệt nhanh
                       </button>
                     </>
                   ) : app.status === "VERIFIED" ? (
                     <span className="inline-flex items-center gap-1 text-emerald-700 font-bold bg-emerald-100 px-3 py-1.5 rounded-xl text-xs">
-                      <CheckCircleRoundedIcon className="!w-4 !h-4" /> Đã kích hoạt chạy đơn
+                      <CheckCircleRoundedIcon className="!w-4 !h-4" /> Đã duyệt
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 text-red-700 font-bold bg-red-100 px-3 py-1.5 rounded-xl text-xs">
-                      <CancelRoundedIcon className="!w-4 !h-4" /> Đã từ chối hồ sơ
+                      <CancelRoundedIcon className="!w-4 !h-4" /> Từ chối
                     </span>
                   )}
                 </div>
@@ -319,6 +337,16 @@ export const AdminView: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Admin eKYC Document Review Modal */}
+      <AdminKycDetailModal
+        application={selectedKycApp}
+        isOpen={isDetailModalOpen}
+        onClose={() => {
+          setIsDetailModalOpen(false);
+          setSelectedKycApp(null);
+        }}
+      />
     </div>
   );
 };
