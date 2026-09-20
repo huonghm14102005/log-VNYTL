@@ -210,7 +210,7 @@ export const MarketView: React.FC = () => {
                   className="rounded text-blue-600 focus:ring-0" 
                 />
                 <span className="flex items-center gap-1.5">
-                  📦 Hàng đóng Container (FCL)
+                 Hàng đóng Container (FCL)
                   <span className="px-1.5 py-0.2 rounded text-[9px] bg-blue-100 text-blue-700 font-extrabold">+ Quy cách Cont</span>
                 </span>
               </label>
