@@ -90,8 +90,8 @@ graph LR
 
 ## 4. SƠ ĐỒ TRẠNG THÁI & LUỒNG NGHIỆP VỤ CỐT LÕI
 
-### 4.1. Quy trình Onboarding & Định danh eKYC bắt buộc (Chuẩn Grab / ShopeeFood)
-Tương tự như chính sách nghiêm ngặt của Grab, ShopeeFood hay Baemin, **an toàn danh tính là điều kiện tiên quyết (Prerequisite)** trước khi bất kỳ người dùng nào được tham gia vào chợ vận tải:
+### 4.1. Quy trình Onboarding & Định danh eKYC bắt buộc (Chuẩn Sàn Vận Tải Quốc Gia)
+Theo chính sách an toàn của nền tảng logistics, **an toàn danh tính là điều kiện tiên quyết (Prerequisite)** trước khi bất kỳ người dùng nào được tham gia vào chợ vận tải:
 - **Tài xế (Driver Partner):** BẮT BUỘC xác thực Căn cước công dân (CCCD) 2 mặt + Chụp ảnh chân dung sinh trắc học + Bằng lái GPLX + Giấy tờ xe + Tài khoản ngân hàng chính chủ. **Nếu chưa được kích hoạt, hệ thống khóa hoàn toàn quyền xem chi tiết và nhận đơn.**
 - **Chủ hàng (Shipper):** BẮT BUỘC xác thực CCCD 2 mặt (đối với cá nhân) hoặc Giấy đăng ký kinh doanh & CCCD người đại diện (đối với doanh nghiệp) trước khi được kích hoạt quyền tạo đơn.
 
@@ -162,7 +162,7 @@ stateDiagram-v2
 ```
 
 ### 4.3. Luồng nghiệp vụ 7 bước khép kín
-1. **Bước 0 - Đăng ký & Định danh eKYC CCCD (Bắt buộc theo chuẩn Grab / ShopeeFood):**
+1. **Bước 0 - Đăng ký & Định danh eKYC CCCD (Bắt buộc theo chuẩn bảo đảm an toàn):**
    - Chủ hàng và Tài xế đăng ký SĐT OTP $\to$ Chụp CCCD 2 mặt $\to$ Chụp ảnh chân dung $\to$ Khai báo phương tiện/tài khoản $\to$ Chờ duyệt $\to$ Nhận trạng thái `ĐÃ KÍCH HOẠT`.
 2. **Bước 1 - Tạo đơn hàng & Đăng chuyến rảnh:**
    - Chủ hàng đã kích hoạt tạo đơn: Ghim điểm lấy/giao trên bản đồ, khai báo quy cách hàng hóa, **giá trị khai báo**, chọn gói dịch vụ.
@@ -220,7 +220,7 @@ stateDiagram-v2
 ### 5.2. Phân hệ Tài xế / Nhà xe (Carrier Portal)
 *Theo cấu trúc chuẩn tại [Giao diện Web.md](file:///d:/Workspace/log-Thao/Giao%20di%E1%BB%87n%20Web.md):*
 
-1. **Quy trình Đăng ký & eKYC Đối tác Tài xế (Chuẩn Grab / ShopeeFood 7 bước nghiêm ngặt):**
+1. **Quy trình Đăng ký & eKYC Đối tác Tài xế (Chuẩn logistics 7 bước nghiêm ngặt):**
    - **Bước 1 (Số điện thoại):** Nhập SĐT $\to$ Nhận mã OTP qua tin nhắn SMS để kích hoạt tài khoản ban đầu.
    - **Bước 2 (Xác thực Căn cước công dân - CCCD):** Chụp ảnh CCCD mặt trước và mặt sau. Hệ thống tích hợp OCR tự động đọc và kiểm tra tính hợp lệ (Số CCCD, Họ tên, Ngày sinh, Quê quán, Ngày hết hạn).
    - **Bước 3 (Chụp ảnh chân dung sinh trắc học):** Tài xế chụp ảnh selfie trực tiếp trên camera ứng dụng. Hệ thống tự động so khớp khuôn mặt giữa ảnh chân dung và ảnh trên thẻ CCCD (Face-matching chống mượn/thuê tài khoản).
@@ -247,7 +247,7 @@ stateDiagram-v2
 ---
 
 ### 5.3. Phân hệ Quản trị (Admin Portal)
-1. **Duyệt hồ sơ eKYC CCCD & Giấy phép (Tương tự Grab Driver Hub / Shopee Merchant Portal):**
+1. **Duyệt hồ sơ eKYC CCCD & Giấy phép vận tải:**
    - Màn hình đối chiếu trực quan 3 cột: Ảnh CCCD 2 mặt vs Ảnh chân dung Selfie vs Ảnh Giấy phép lái xe / Đăng ký xe.
    - Công cụ duyệt 1 chạm: Phê duyệt (Kích hoạt tức thì) hoặc Từ chối (chọn lý do: ảnh mờ, bằng lái hết hạn, tên ngân hàng không khớp).
 2. **Giám sát giao dịch & Tài khoản Escrow:**

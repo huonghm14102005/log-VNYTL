@@ -22,10 +22,28 @@ export default function Home() {
   const { activeTab, role, toastMessage } = useApp();
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  // Render view router based on activeTab
+  // Render view router based on role and activeTab
   const renderActiveView = () => {
-    if (role === "ADMIN" || activeTab === "admin") {
-      return <AdminView />;
+    if (role === "ADMIN") {
+      switch (activeTab) {
+        case "admin":
+        case "admin-ekyc":
+        case "admin-escrow":
+        case "admin-disputes":
+        case "dashboard":
+          return <AdminView />;
+        case "admin-orders":
+        case "my-orders":
+          return <MyOrdersView />;
+        case "settings":
+          return <SettingsView />;
+        case "wallet":
+          return <WalletView />;
+        case "map":
+          return <MapView />;
+        default:
+          return <AdminView />;
+      }
     }
 
     switch (activeTab) {
@@ -49,6 +67,8 @@ export default function Home() {
         return <ServicesView />;
       case "settings":
         return <SettingsView />;
+      case "admin":
+        return <AdminView />;
       default:
         return <DashboardView />;
     }

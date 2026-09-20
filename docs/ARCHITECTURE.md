@@ -112,7 +112,7 @@ graph TB
 
 ## 3. PHÂN RÃ CÁC PHÂN HỆ & DỊCH VỤ CỐT LÕI (CORE SERVICES)
 
-### 3.1. Auth & eKYC Service (Định danh Căn cước công dân chuẩn Grab/ShopeeFood)
+### 3.1. Auth & eKYC Service (Định danh Căn cước công dân & Giấy phép vận tải)
 - **Nhiệm vụ:** Đăng ký SĐT, xác thực OTP, tiếp nhận ảnh CCCD 2 mặt, ảnh selfie chân dung, giấy phép lái xe, giấy tờ xe.
 - **Quy trình xử lý tự động & thủ công:**
   1. *Bước 1 - OCR Extraction:* Tiếp nhận ảnh CCCD $\to$ Dùng thư viện Tesseract OCR hoặc Google Vision API bóc tách: Số CCCD, Họ tên, Ngày sinh, Quê quán, Ngày hết hạn.

@@ -37,7 +37,7 @@ export const Header: React.FC = () => {
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
             role === "DRIVER"
               ? "bg-blue-600 text-white shadow-sm"
-              : "text-slate-600 hover:text-slate-900"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
           }`}
         >
           <LocalShippingRoundedIcon className="!w-4 !h-4" />
@@ -51,8 +51,8 @@ export const Header: React.FC = () => {
           }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
             role === "SHIPPER"
-              ? "bg-blue-600 text-white shadow-sm"
-              : "text-slate-600 hover:text-slate-900"
+              ? "bg-indigo-600 text-white shadow-sm"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
           }`}
         >
           <Inventory2RoundedIcon className="!w-4 !h-4" />
@@ -66,8 +66,8 @@ export const Header: React.FC = () => {
           }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
             role === "ADMIN"
-              ? "bg-blue-600 text-white shadow-sm"
-              : "text-slate-600 hover:text-slate-900"
+              ? "bg-amber-600 text-white shadow-sm"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
           }`}
         >
           <AdminPanelSettingsRoundedIcon className="!w-4 !h-4" />
@@ -85,8 +85,16 @@ export const Header: React.FC = () => {
 
         {/* User Card matching image1.png */}
         <div className="flex items-center gap-3 pl-3 border-l border-slate-200">
-          <div className="w-9 h-9 rounded-full bg-blue-100 border border-blue-300 flex items-center justify-center text-blue-700 font-bold text-sm overflow-hidden">
-            {currentUser.avatarUrl ? (
+          <div className={`w-9 h-9 rounded-full border flex items-center justify-center font-bold text-sm overflow-hidden ${
+            role === "ADMIN"
+              ? "bg-amber-100 border-amber-300 text-amber-800"
+              : role === "SHIPPER"
+              ? "bg-indigo-100 border-indigo-300 text-indigo-700"
+              : "bg-blue-100 border-blue-300 text-blue-700"
+          }`}>
+            {role === "ADMIN" ? (
+              <AdminPanelSettingsRoundedIcon className="!w-5 !h-5 text-amber-700" />
+            ) : currentUser.avatarUrl ? (
               <img src={currentUser.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
               currentUser.fullName.charAt(0)
@@ -94,11 +102,11 @@ export const Header: React.FC = () => {
           </div>
           <div className="hidden sm:block text-left">
             <p className="text-sm font-semibold text-slate-800 leading-tight flex items-center gap-1">
-              {currentUser.fullName}
+              {role === "ADMIN" ? "Ban Điều Hành Sàn" : currentUser.fullName}
               <VerifiedUserRoundedIcon className="!w-4 !h-4 text-emerald-500 inline" />
             </p>
             <p className="text-xs text-slate-500 font-medium">
-              {role === "DRIVER" ? "Tài xế chuyên tuyến" : "Chủ hàng Doanh nghiệp"}
+              {role === "ADMIN" ? "Admin Tổng Sàn VYLT" : role === "DRIVER" ? "Tài xế chuyên tuyến" : "Chủ hàng Doanh nghiệp"}
             </p>
           </div>
         </div>
