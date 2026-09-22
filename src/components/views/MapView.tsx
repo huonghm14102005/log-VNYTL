@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { useApp } from "@/context/AppContext";
 import { formatVND } from "@/lib/currency";
 import {
@@ -13,6 +14,20 @@ import {
   ShieldCheck,
   Camera,
 } from "lucide-react";
+
+// Dynamically import Leaflet map to avoid SSR window errors in Next.js
+const RealLeafletMap = dynamic(
+  () => import("@/components/RealLeafletMap").then((m) => m.RealLeafletMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[480px] bg-slate-100 rounded-2xl flex flex-col items-center justify-center gap-3 text-slate-500">
+        <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-xs font-semibold">Đang tải bản đồ số OpenStreetMap...</p>
+      </div>
+    ),
+  }
+);
 
 export const MapView: React.FC = () => {
   const { selectedOrder, updateLocationStep, submitPod, showToast, role } = useApp();
@@ -172,97 +187,16 @@ export const MapView: React.FC = () => {
           </button>
         </div>
 
-        {/* Right Column: Stylized Live Route Map matching Screen 5 in image1.png (7 Cols) */}
-        <div className="lg:col-span-7 bg-slate-100 rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden relative min-h-[480px] flex flex-col">
-          {/* Map Top Controls matching image1.png */}
-          <div className="absolute top-4 right-4 z-10 flex gap-2">
-            <span className="bg-white/95 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-bold text-slate-700 shadow-sm border border-slate-200">
-              Bản đồ
-            </span>
-            <span className="bg-white/70 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-medium text-slate-500 shadow-sm hover:bg-white cursor-pointer">
-              Vệ tinh
-            </span>
-          </div>
-
-          {/* Map Visualization SVG (Hải Phòng -> Hải Dương -> Hà Nội) */}
-          <div className="flex-1 w-full h-full bg-[#E2E8F0] relative overflow-hidden flex items-center justify-center p-6">
-            {/* Background Grid Lines representing map roads */}
-            <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:16px_16px]"></div>
-
-            <svg viewBox="0 0 600 400" className="w-full h-full max-w-xl max-h-96 drop-shadow-md">
-              {/* Route Road CT04 */}
-              <path
-                d="M 500,320 C 380,310 320,200 120,100"
-                fill="none"
-                stroke="#94A3B8"
-                strokeWidth="12"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 500,320 C 380,310 320,200 120,100"
-                fill="none"
-                stroke="#2563EB"
-                strokeWidth="6"
-                strokeLinecap="round"
-                strokeDasharray="8 4"
-              />
-
-              {/* Pin 1: Hải Phòng */}
-              <g transform="translate(500, 320)">
-                <circle r="14" fill="#10B981" opacity="0.3" />
-                <circle r="8" fill="#10B981" />
-                <text x="16" y="5" fill="#0F172A" fontSize="13" fontWeight="bold">
-                  Hải Phòng (Kho Đình Vũ)
-                </text>
-              </g>
-
-              {/* Pin 2: Hải Dương (Waypoint) */}
-              <g transform="translate(310, 205)">
-                <circle r="5" fill="#3B82F6" />
-                <text x="-40" y="-12" fill="#64748B" fontSize="11" fontWeight="semibold">
-                  Hải Dương (55 km)
-                </text>
-              </g>
-
-              {/* Pin 3: Hà Nội */}
-              <g transform="translate(120, 100)">
-                <circle r="16" fill="#EF4444" opacity="0.3" />
-                <circle r="9" fill="#EF4444" />
-                <text x="-130" y="-10" fill="#0F172A" fontSize="13" fontWeight="bold">
-                  Hà Nội (KCN Thăng Long)
-                </text>
-              </g>
-
-              {/* Moving Truck Icon */}
-              {simulatedKm < 120 ? (
-                <g transform={`translate(${500 - (simulatedKm / 120) * 380}, ${320 - (simulatedKm / 120) * 220})`}>
-                  <circle r="20" fill="#2563EB" opacity="0.2" className="animate-ping" />
-                  <rect x="-16" y="-12" width="32" height="24" rx="6" fill="#1E293B" stroke="#FFFFFF" strokeWidth="2" />
-                  <g transform="translate(-10, -9) scale(0.85)">
-                    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M15 18H9" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M19 18h2a1 1 0 0 0 1-1v-5.28a1 1 0 0 0-.29-.7l-3.42-3.43a1 1 0 0 0-.71-.29H14v10.7" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="7" cy="18" r="2" fill="none" stroke="#FFFFFF" strokeWidth="2" />
-                    <circle cx="17" cy="18" r="2" fill="none" stroke="#FFFFFF" strokeWidth="2" />
-                  </g>
-                </g>
-              ) : (
-                <g transform="translate(120, 100)">
-                  <rect x="-24" y="-36" width="60" height="24" rx="6" fill="#10B981" stroke="#FFFFFF" strokeWidth="2" />
-                  <text x="-18" y="-20" fill="#FFFFFF" fontSize="11" fontWeight="bold">ĐÃ TỚI NƠI</text>
-                </g>
-              )}
-            </svg>
-
-            {/* Bottom Floating Stats on Map */}
-            <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-xl border border-slate-200 text-xs shadow-md space-y-1">
-              <div className="flex items-center gap-2 font-bold text-slate-800">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                Tốc độ di chuyển: 62 km/h
-              </div>
-              <p className="text-slate-500 text-[11px]">Đang lưu thông trên Cao tốc Hà Nội - Hải Phòng</p>
-            </div>
-          </div>
+        {/* Right Column: Real Interactive GPS Route Map with OpenStreetMap / Satellite (7 Cols) */}
+        <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden min-h-[480px] flex flex-col">
+          <RealLeafletMap
+            simulatedKm={simulatedKm}
+            originCity={order.originCity}
+            originAddress={order.originAddress}
+            destCity={order.destCity}
+            destAddress={order.destAddress}
+            orderCode={order.orderCode}
+          />
         </div>
       </div>
 
