@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
 import { formatVND } from "@/lib/currency";
+import { MiniMarketMap } from "@/components/MiniMarketMap";
 import {
   Search,
   RotateCcw,
@@ -26,15 +27,18 @@ import {
   Layers,
   Construction,
   Repeat,
+  Map,
 } from "lucide-react";
 
 export const MarketView: React.FC = () => {
-  const { orders, setSelectedOrder, setActiveTab } = useApp();
+  const { orders, setSelectedOrder, setActiveTab, selectedOrder } = useApp();
 
   const [fromCity, setFromCity] = useState("Hải Phòng");
   const [toCity, setToCity] = useState("Hà Nội");
   const [filterType, setFilterType] = useState<"ALL" | "AI_MATCHED" | "URGENT">("ALL");
   const [weightLimit, setWeightLimit] = useState(15);
+  const [showMiniMap, setShowMiniMap] = useState(true);
+  const [hoveredOrderId, setHoveredOrderId] = useState<string | null>(null);
   
   // State Loại hàng
   const [isContainerCargo, setIsContainerCargo] = useState(false);
@@ -399,10 +403,25 @@ export const MarketView: React.FC = () => {
 
         {/* Right List of Cargo Orders matching image1.png */}
         <div className="lg:col-span-9 space-y-4">
-          <div className="flex items-center justify-between px-1">
-            <p className="text-sm font-semibold text-slate-600">
-              Tìm thấy <strong className="text-blue-600">{filteredOrders.length}</strong> chuyến hàng phù hợp
-            </p>
+          <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+            <div className="flex items-center gap-3">
+              <p className="text-sm font-semibold text-slate-600">
+                Tìm thấy <strong className="text-blue-600">{filteredOrders.length}</strong> chuyến hàng phù hợp
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowMiniMap(!showMiniMap)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  showMiniMap
+                    ? "bg-blue-600 text-white shadow-2xs"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
+              >
+                <Map className="w-3.5 h-3.5" />
+                {showMiniMap ? "Bản đồ mini: BẬT" : "Hiện bản đồ mini"}
+              </button>
+            </div>
+
             <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
               <span>Sắp xếp:</span>
               <select className="bg-transparent font-bold text-slate-800 focus:outline-none cursor-pointer">
@@ -413,20 +432,43 @@ export const MarketView: React.FC = () => {
             </div>
           </div>
 
+          {/* Mini Interactive Logistics Corridor Map */}
+          {showMiniMap && (
+            <MiniMarketMap
+              orders={filteredOrders}
+              hoveredOrderId={hoveredOrderId}
+              selectedOrderId={selectedOrder?.id}
+              selectedCity={fromCity || toCity}
+              onSelectCity={(city) => {
+                if (city === "Hải Phòng" || city === "Quảng Ninh") {
+                  setFromCity(city);
+                } else {
+                  setToCity(city);
+                }
+              }}
+              onOpenFullMap={() => setActiveTab("map")}
+            />
+          )}
+
           {/* Cards */}
           <div className="space-y-3.5">
             {filteredOrders.map((order) => {
               const isUrgent = order.urgencyLevel === "URGENT";
+              const isHovered = hoveredOrderId === order.id;
 
               return (
                 <div
                   key={order.id}
-                  className={`bg-white p-5 rounded-2xl border transition-all duration-150 hover:shadow-md ${
-                    isUrgent
-                      ? "border-red-300 ring-1 ring-red-100 bg-red-50/20"
+                  onMouseEnter={() => setHoveredOrderId(order.id)}
+                  onMouseLeave={() => setHoveredOrderId(null)}
+                  className={`bg-white p-5 rounded-2xl border transition-all duration-150 ${
+                    isHovered
+                      ? "ring-2 ring-blue-500 shadow-md border-blue-400 -translate-y-0.5"
+                      : isUrgent
+                      ? "border-red-300 ring-1 ring-red-100 bg-red-50/20 hover:shadow-md"
                       : order.isReturnTripMatch
-                      ? "border-blue-300 ring-1 ring-blue-100 bg-blue-50/10"
-                      : "border-slate-200/90"
+                      ? "border-blue-300 ring-1 ring-blue-100 bg-blue-50/10 hover:shadow-md"
+                      : "border-slate-200/90 hover:shadow-md"
                   }`}
                 >
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
