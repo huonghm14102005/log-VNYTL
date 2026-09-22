@@ -66,13 +66,25 @@ export const MyOrdersView: React.FC = () => {
 
   return (
     <div className="space-y-6 pb-12">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-slate-800">
-          {role === "DRIVER" ? "Chuyến của tôi" : "Đơn hàng của tôi"}
-        </h2>
-        <span className="text-xs text-slate-500 font-medium">
-          Quản lý theo thời gian thực (FSM Workflow)
-        </span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-bold text-slate-800">
+            {role === "DRIVER" ? "Chuyến của tôi (Tài xế)" : "Đơn hàng đã đăng (Chủ hàng)"}
+          </h2>
+          <p className="text-xs text-slate-500 font-medium">
+            {role === "DRIVER"
+              ? "Quản lý tiến trình vận chuyển & trạng thái giao nhận e-POD theo thời gian thực"
+              : "Theo dõi 6 đơn hàng trọng tải nặng, đối soát ký quỹ Escrow và tiến độ giao hàng"}
+          </p>
+        </div>
+        {role === "SHIPPER" && (
+          <button
+            onClick={() => setActiveTab("create-order")}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition-all flex items-center gap-1.5 self-start sm:self-auto"
+          >
+            + Đăng đơn hàng mới
+          </button>
+        )}
       </div>
 
       {/* Status Filter Tabs matching Screen 4 in image1.png */}
@@ -122,8 +134,8 @@ export const MyOrdersView: React.FC = () => {
               </h3>
 
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 font-medium">
-                <span className="flex items-center gap-1">
-                  <Package className="w-3.5 h-3.5 text-slate-400" />
+                <span className="flex items-center gap-1 font-semibold text-slate-800">
+                  <Package className="w-3.5 h-3.5 text-blue-600" />
                   {order.cargoName}
                 </span>
                 <span className="flex items-center gap-1">
@@ -140,6 +152,14 @@ export const MyOrdersView: React.FC = () => {
                 <span>Nhận: {order.pickupTime}</span>
                 <span>•</span>
                 <span>Giao: {order.deliveryTime}</span>
+                {order.driverName && (
+                  <>
+                    <span>•</span>
+                    <span className="font-semibold text-blue-700">
+                      Tài xế: {order.driverName} ({order.driverPlateNumber})
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 

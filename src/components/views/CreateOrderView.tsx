@@ -23,30 +23,103 @@ export const CreateOrderView: React.FC = () => {
   const [step, setStep] = useState(1);
 
   // Form states
-  const [originCity, setOriginCity] = useState("Hải Phòng");
-  const [originAddress, setOriginAddress] = useState("Kho Thép Cảng Đình Vũ, Hải An, Hải Phòng");
-  const [destCity, setDestCity] = useState("Hà Nội");
-  const [destAddress, setDestAddress] = useState("Tổng kho kim khí KCN Thăng Long, Đông Anh, Hà Nội");
-  const [cargoName, setCargoName] = useState("8 Tấn Cuộn Thép Công Nghiệp");
-  const [cargoType, setCargoType] = useState("Kim loại / Vật liệu nặng");
-  const [cargoWeightKg, setCargoWeightKg] = useState(8000);
-  const [cargoVolumeCbm, setCargoVolumeCbm] = useState(18);
-  const [cargoLength, setCargoLength] = useState("4.5");
-  const [cargoWidth, setCargoWidth] = useState("2.2");
-  const [cargoHeight, setCargoHeight] = useState("1.9");
+  const [originCity, setOriginCity] = useState("Hưng Yên");
+  const [originAddress, setOriginAddress] = useState("Kho Sebang Logistics, KCN Phố Nối A, Hưng Yên");
+  const [destCity, setDestCity] = useState("Hải Phòng");
+  const [destAddress, setDestAddress] = useState("Cảng Nam Hải Đình Vũ, Hải An, Hải Phòng");
+  const [cargoName, setCargoName] = useState("Cont 40ft Than Viên Nén Xuất Khẩu");
+  const [cargoType, setCargoType] = useState("Hàng Container / Năng lượng");
+  const [cargoWeightKg, setCargoWeightKg] = useState(26000);
+  const [cargoVolumeCbm, setCargoVolumeCbm] = useState(67.5);
+  const [cargoLength, setCargoLength] = useState("12.0");
+  const [cargoWidth, setCargoWidth] = useState("2.35");
+  const [cargoHeight, setCargoHeight] = useState("2.39");
   const [cargoPhotoUrl, setCargoPhotoUrl] = useState("https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&auto=format&fit=crop&q=80");
-  const [driverNotes, setDriverNotes] = useState("Hàng cuộn thép nặng, yêu cầu xe có xích chằng chuyên dụng và phủ bạt kín chống ướt.");
+  const [driverNotes, setDriverNotes] = useState("Hàng than đóng cont 40 kẹp seal chì niêm phong. Yêu cầu xe đầu kéo khóa gù mooc chắc chắn.");
   
   // Extra services
-  const [extraServices, setExtraServices] = useState<string[]>(["Hỗ trợ bốc xếp hai đầu", "Xuất hóa đơn GTGT"]);
+  const [extraServices, setExtraServices] = useState<string[]>(["Hỗ trợ kẹp seal hải quan", "Xuất hóa đơn GTGT"]);
 
-  const [vehicleType, setVehicleType] = useState("Xe tải thùng kín (10 tấn)");
-  const [declaredValue, setDeclaredValue] = useState(200000000); // 200tr
-  const [baseFreightPrice, setBaseFreightPrice] = useState(3800000); // 3.8tr
+  const [vehicleType, setVehicleType] = useState("Xe đầu kéo (Kéo container 40ft / Moóc sàn)");
+  const [declaredValue, setDeclaredValue] = useState(350000000); // 350tr
+  const [baseFreightPrice, setBaseFreightPrice] = useState(5800000); // 5.8tr
   const [servicePackage, setServicePackage] = useState<"STANDARD" | "SUPERVISED" | "INSURED">("SUPERVISED");
-  const [urgencyLevel, setUrgencyLevel] = useState<"NORMAL" | "URGENT" | "FLEXIBLE">("URGENT");
+  const [urgencyLevel, setUrgencyLevel] = useState<"NORMAL" | "URGENT" | "FLEXIBLE">("NORMAL");
   const [voucherCode, setVoucherCode] = useState("VYLT2026");
   const [isVoucherApplied, setIsVoucherApplied] = useState(true);
+
+  // Áp dụng mẫu đơn hàng nhanh
+  const applyPreset = (preset: "THAN_CONT40" | "THEP_CUON" | "TOM_DONG_LANH" | "MAY_BIEN_AP") => {
+    if (preset === "THAN_CONT40") {
+      setOriginCity("Hưng Yên");
+      setOriginAddress("Kho Sebang Logistics, KCN Phố Nối A, Hưng Yên");
+      setDestCity("Hải Phòng");
+      setDestAddress("Cảng Nam Hải Đình Vũ, Hải An, Hải Phòng");
+      setCargoName("Cont 40ft Than Viên Nén Xuất Khẩu");
+      setCargoType("Hàng Container / Năng lượng");
+      setCargoWeightKg(26000);
+      setCargoVolumeCbm(67.5);
+      setCargoLength("12.0");
+      setCargoWidth("2.35");
+      setCargoHeight("2.39");
+      setDriverNotes("Hàng than đóng cont 40 kẹp seal chì niêm phong. Yêu cầu xe đầu kéo khóa gù mooc chắc chắn, giao bãi Cảng Nam Hải Đình Vũ.");
+      setVehicleType("Xe đầu kéo (Kéo container 40ft / Moóc sàn)");
+      setDeclaredValue(350000000);
+      setBaseFreightPrice(5800000);
+      setExtraServices(["Hỗ trợ kẹp seal hải quan", "Xuất hóa đơn GTGT"]);
+    } else if (preset === "THEP_CUON") {
+      setOriginCity("Hải Phòng");
+      setOriginAddress("Cảng Hoàng Diệu / Tân Vũ, Ngô Quyền, Hải Phòng");
+      setDestCity("Hải Phòng");
+      setDestAddress("QL10 (chân cầu Kiền), TDP Ngô Yến, P. An Hồng, Hải Phòng");
+      setCargoName("Thép Cuộn Cán Nóng (6 x 1500 mm)");
+      setCargoType("Kim loại / Hàng siêu trọng");
+      setCargoWeightKg(22000);
+      setCargoVolumeCbm(12);
+      setCargoLength("1.5");
+      setCargoWidth("1.5");
+      setCargoHeight("1.5");
+      setDriverNotes("Hàng thép cuộn 22T/cuộn siêu nặng. Bắt buộc xe có máng chữ V hoặc nêm gỗ chèn chống lăn, chằng tối thiểu 4 xích tăng đơ chịu lực.");
+      setVehicleType("Xe đầu kéo (Mooc sàn chở thép cuộn)");
+      setDeclaredValue(420000000);
+      setBaseFreightPrice(5200000);
+      setExtraServices(["Chằng buộc xích tăng đơ", "Xuất hóa đơn GTGT"]);
+    } else if (preset === "TOM_DONG_LANH") {
+      setOriginCity("Hưng Yên");
+      setOriginAddress("Kho lạnh KCN Phố Nối B, Mỹ Hào, Hưng Yên");
+      setDestCity("Hải Phòng");
+      setDestAddress("Cảng Quốc tế Lạch Huyện (TC-HICT), Hải Phòng");
+      setCargoName("Tôm Sú Đông Lạnh Xuất Khẩu (-18°C)");
+      setCargoType("Thực phẩm đông lạnh / Cont lạnh");
+      setCargoWeightKg(25000);
+      setCargoVolumeCbm(65);
+      setCargoLength("12.0");
+      setCargoWidth("2.35");
+      setCargoHeight("2.4");
+      setDriverNotes("Cont lạnh 40RF duy trì -18 độ C suốt hành trình. Cắm máy phát GenSet chạy điện liên tục.");
+      setVehicleType("Xe đầu kéo (Cont lạnh 40RF có GenSet)");
+      setDeclaredValue(850000000);
+      setBaseFreightPrice(6500000);
+      setExtraServices(["Chạy máy phát GenSet", "Xuất hóa đơn GTGT"]);
+    } else if (preset === "MAY_BIEN_AP") {
+      setOriginCity("Bắc Ninh");
+      setOriginAddress("KCN Tiên Sơn, Bắc Ninh");
+      setDestCity("Hải Phòng");
+      setDestAddress("Trạm phân phối điện KCN VSIP Thủy Nguyên, Hải Phòng");
+      setCargoName("Máy Biến Áp Dầu 3 Pha 1600kVA & Tủ Điện");
+      setCargoType("Thiết bị điện công nghiệp nặng");
+      setCargoWeightKg(14000);
+      setCargoVolumeCbm(22);
+      setCargoLength("4.2");
+      setCargoWidth("2.2");
+      setCargoHeight("2.5");
+      setDriverNotes("Yêu cầu xe tải cẩu 4 chân (cẩu 12 tấn) tự nâng hạ hàng tại trạm biến áp, bọc cáp chống trầy xước.");
+      setVehicleType("Xe tải cẩu 4 chân (Cẩu 10-12 tấn)");
+      setDeclaredValue(480000000);
+      setBaseFreightPrice(6200000);
+      setExtraServices(["Ca cẩu bốc dỡ 2 đầu", "Xuất hóa đơn GTGT"]);
+    }
+  };
 
   // Tính cọc yêu cầu: 10% giá trị khai báo, tối đa trần 5tr
   const requiredDeposit = Math.min(5000000, Math.max(300000, declaredValue * 0.1));
@@ -164,6 +237,75 @@ export const CreateOrderView: React.FC = () => {
         {/* Step 1: Lộ trình */}
         {step === 1 && (
           <div className="space-y-4">
+            {/* Quick Presets for Demo */}
+            <div className="p-3.5 bg-blue-50/70 rounded-xl border border-blue-200/80 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  Mẫu đơn thực tế (Điền nhanh 1 chạm cho Chủ hàng):
+                </span>
+                <span className="text-[10px] text-blue-600 font-semibold">Chuẩn tải trọng & Loại xe</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => applyPreset("THAN_CONT40")}
+                  className={`p-2.5 rounded-xl text-left text-xs font-semibold border transition-all ${
+                    cargoName.includes("Than")
+                      ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                      : "bg-white text-slate-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50/50"
+                  }`}
+                >
+                  <p className="font-bold">1. Cont 40ft Than (26 Tấn)</p>
+                  <p className={`text-[10px] ${cargoName.includes("Than") ? "text-blue-100" : "text-slate-500"}`}>
+                    Kho Sebang Hưng Yên ➔ Cảng Nam Hải Đình Vũ
+                  </p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyPreset("THEP_CUON")}
+                  className={`p-2.5 rounded-xl text-left text-xs font-semibold border transition-all ${
+                    cargoName.includes("Thép")
+                      ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                      : "bg-white text-slate-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50/50"
+                  }`}
+                >
+                  <p className="font-bold">2. Thép Cuộn 6x1500mm (22 Tấn)</p>
+                  <p className={`text-[10px] ${cargoName.includes("Thép") ? "text-blue-100" : "text-slate-500"}`}>
+                    Cảng Tân Vũ ➔ Chân cầu Kiền, An Hồng
+                  </p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyPreset("TOM_DONG_LANH")}
+                  className={`p-2.5 rounded-xl text-left text-xs font-semibold border transition-all ${
+                    cargoName.includes("Tôm")
+                      ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                      : "bg-white text-slate-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50/50"
+                  }`}
+                >
+                  <p className="font-bold">3. Cont Lạnh 40RF Tôm (25 Tấn)</p>
+                  <p className={`text-[10px] ${cargoName.includes("Tôm") ? "text-blue-100" : "text-slate-500"}`}>
+                    KCN Phố Nối B ➔ Cảng Lạch Huyện (-18°C)
+                  </p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyPreset("MAY_BIEN_AP")}
+                  className={`p-2.5 rounded-xl text-left text-xs font-semibold border transition-all ${
+                    cargoName.includes("Biến Áp")
+                      ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                      : "bg-white text-slate-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50/50"
+                  }`}
+                >
+                  <p className="font-bold">4. Xe Cẩu 4 Chân Biến Áp (14 Tấn)</p>
+                  <p className={`text-[10px] ${cargoName.includes("Biến Áp") ? "text-blue-100" : "text-slate-500"}`}>
+                    KCN Tiên Sơn ➔ KCN VSIP Thủy Nguyên
+                  </p>
+                </button>
+              </div>
+            </div>
+
             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
               <MapPin className="w-4 h-4 text-blue-600" />
               Tuyến vận chuyển & Độ khẩn cấp
@@ -472,12 +614,16 @@ export const CreateOrderView: React.FC = () => {
                   onChange={(e) => setVehicleType(e.target.value)}
                   className="w-full bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-slate-800 font-semibold"
                 >
+                  <option>Xe đầu kéo (Kéo container 40ft / Moóc sàn)</option>
+                  <option>Xe đầu kéo (Mooc sàn chở thép cuộn)</option>
+                  <option>Xe đầu kéo (Cont lạnh 40RF có GenSet)</option>
+                  <option>Xe tải cẩu 4 chân (Cẩu 10-12 tấn)</option>
+                  <option>Xe đầu kéo (Fooc lùn / Lowbed 3 trục chở máy công trình)</option>
                   <option>Xe tải thùng kín (10 tấn)</option>
                   <option>Xe tải mui bạt (15 tấn)</option>
-                  <option>Xe đầu kéo (Kéo container 40ft / Moóc sàn)</option>
-                  <option>Xe chuyên dụng (Xe bồn, Moóc lùn chở máy công trình)</option>
+                  <option>Xe bồn xitéc chuyên dụng (Chất lỏng / Xăng dầu)</option>
                 </select>
-                <p className="text-[11px] text-slate-400 mt-1">Đã tích hợp xe đầu kéo kéo sơ mi rơ-moóc / container theo chuẩn logistics.</p>
+                <p className="text-[11px] text-slate-400 mt-1">Đã tích hợp đầy đủ xe đầu kéo cont 40ft, mooc sàn chở thép, cont lạnh và xe cẩu.</p>
               </div>
 
               {/* Thẻ Lựa chọn yêu cầu bổ sung dạng thẻ sẵn có phụ phí */}

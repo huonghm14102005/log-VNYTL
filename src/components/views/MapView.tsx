@@ -38,17 +38,17 @@ export const MapView: React.FC = () => {
 
   const order = selectedOrder || {
     orderCode: "FT202609180023",
-    originCity: "Hải Phòng",
-    originAddress: "Cảng Đình Vũ, Đông Hải 2, Hải An, Hải Phòng",
-    destCity: "Hà Nội",
-    destAddress: "KCN Thăng Long, Đông Anh, Hà Nội",
-    distanceKm: 120,
-    cargoName: "Máy móc công nghiệp",
-    cargoWeightKg: 8000,
-    vehicleTypeRequired: "Xe tải thùng",
-    freightPrice: 3500000,
+    originCity: "Hưng Yên",
+    originAddress: "Kho Sebang Logistics, KCN Phố Nối A, Hưng Yên",
+    destCity: "Hải Phòng",
+    destAddress: "Cảng Nam Hải Đình Vũ, Hải An, Hải Phòng",
+    distanceKm: 95,
+    cargoName: "Cont 40ft Than Viên Nén Xuất Khẩu",
+    cargoWeightKg: 26000,
+    vehicleTypeRequired: "Xe đầu kéo (Cont 40ft)",
+    freightPrice: 5800000,
     pickupTime: "18/09/2026 - 08:00",
-    deliveryTime: "18/09/2026 - 14:00",
+    deliveryTime: "18/09/2026 - 13:30",
     status: "IN_TRANSIT",
   };
 

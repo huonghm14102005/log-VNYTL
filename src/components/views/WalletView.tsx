@@ -67,11 +67,11 @@ export const WalletView: React.FC = () => {
             {isDriver ? "Tổng thu nhập tháng này" : "Tổng chi phí vận tải tháng"}
           </p>
           <h3 className="text-2xl font-extrabold text-slate-900">
-            {formatVND(wallet.totalIncome || 35200000)}
+            {formatVND(isDriver ? (wallet.totalIncome || 23500000) : 34500000)}
           </h3>
           <span className="text-xs font-bold text-emerald-600 flex items-center gap-0.5 mt-2">
             <ArrowUpRight className="w-3.5 h-3.5" />
-            {isDriver ? "+ 18% so với tháng trước" : "Tiết kiệm 22% nhờ xe rỗng"}
+            {isDriver ? "+ 8% so với tháng trước" : "Tiết kiệm 20% nhờ ghép xe rỗng"}
           </span>
         </div>
 
@@ -81,7 +81,7 @@ export const WalletView: React.FC = () => {
             {isDriver ? "Đã nhận (Có thể rút)" : "Đã thanh toán (Hoàn tất giao hàng)"}
           </p>
           <h3 className="text-2xl font-extrabold text-emerald-600">
-            {formatVND(wallet.incomeBalance || 28500000)}
+            {formatVND(isDriver ? (wallet.incomeBalance || 18500000) : 23500000)}
           </h3>
           {isDriver ? (
             <button
@@ -94,7 +94,7 @@ export const WalletView: React.FC = () => {
           ) : (
             <p className="text-xs text-slate-500 mt-2 flex items-center gap-1 font-medium">
               <FileCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Đã xuất đủ 8 hóa đơn VAT</span>
+              <span>Đã xuất đủ 4 hóa đơn VAT điện tử</span>
             </p>
           )}
         </div>
@@ -105,7 +105,7 @@ export const WalletView: React.FC = () => {
             {isDriver ? "Ví cọc khả dụng / Đang khóa" : "Đang ký quỹ tạm giữ trong Escrow"}
           </p>
           <h3 className="text-2xl font-extrabold text-blue-600">
-            {isDriver ? formatVND(wallet.depositBalance) : formatVND(wallet.lockedDeposit || 6700000)}
+            {isDriver ? formatVND(wallet.depositBalance) : formatVND(11000000)}
           </h3>
           <p className="text-xs text-slate-500 flex items-center gap-1 mt-2">
             <Lock className="w-3 h-3 text-amber-500" />
@@ -127,36 +127,46 @@ export const WalletView: React.FC = () => {
               {isDriver ? "Biểu đồ thu nhập" : "Biểu đồ chi phí vận tải"}
             </h3>
             <span className="text-xs text-slate-400 font-semibold flex items-center gap-1">
-              Theo ngày
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              Theo tuần
             </span>
           </div>
 
-          {/* Bar Chart Simulation */}
-          <div className="h-48 flex items-end justify-between gap-1.5 px-2 pt-6 border-b border-slate-200">
-            {[20, 35, 45, 30, 60, 50, 80, 75, 95, 65, 40, 55, 70, 85].map((val, idx) => (
-              <div key={idx} className="flex-1 flex flex-col items-center gap-1">
+          <div className="h-44 flex items-end justify-between gap-3 px-2 pt-4 border-b border-slate-200">
+            {[
+              { day: "Tuần 1", height: "55%", value: isDriver ? "5.5tr" : "7.2tr" },
+              { day: "Tuần 2", height: "65%", value: isDriver ? "5.8tr" : "8.5tr" },
+              { day: "Tuần 3", height: "85%", value: isDriver ? "6.8tr" : "9.8tr", active: true },
+              { day: "Tuần 4", height: "50%", value: isDriver ? "5.4tr" : "9.0tr" },
+            ].map((bar, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-2 group relative">
+                <span className="absolute -top-7 text-[10px] font-bold bg-slate-800 text-white px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  {bar.value}
+                </span>
                 <div
-                  className="w-full bg-blue-500 hover:bg-blue-600 rounded-t transition-all duration-200"
-                  style={{ height: `${val}%` }}
+                  className={`w-full rounded-t-lg transition-all duration-300 ${
+                    bar.active
+                      ? "bg-blue-600 shadow-md shadow-blue-500/30"
+                      : "bg-blue-200 hover:bg-blue-400"
+                  }`}
+                  style={{ height: bar.height }}
                 ></div>
-                <span className="text-[9px] text-slate-400">{idx + 1}</span>
+                <span className="text-[11px] font-semibold text-slate-500">{bar.day}</span>
               </div>
             ))}
           </div>
 
-          <div className="flex justify-between text-xs text-slate-500 pt-1 font-medium">
-            <span>01/09/2026</span>
-            <span>15/09/2026</span>
-            <span>30/09/2026</span>
+          <div className="pt-2 text-xs text-slate-500 flex items-center justify-between">
+            <span>Chi phí trung bình: ~5.75tr / đơn</span>
+            <span className="text-emerald-600 font-bold">100% hóa đơn VAT</span>
           </div>
         </div>
 
-        {/* Right Column: Bảng Lịch sử đơn hàng & Chi phí thanh toán (7 Cols) */}
+        {/* Right Column: Sổ cái giao dịch Escrow (7 Cols) */}
         <div className="lg:col-span-7 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h3 className="text-sm font-bold text-slate-800">
-              {isDriver ? "Chi tiết thu nhập" : "Lịch sử đơn hàng & Chi phí thanh toán"}
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <Receipt className="w-4 h-4 text-blue-600" />
+              {isDriver ? "Lịch sử biến động Ví Cọc & Tiền Cước" : "Sổ cái Ký Quỹ & Thanh Toán Escrow"}
             </h3>
             <button className="text-xs font-semibold text-blue-600 hover:underline">
               Xem tất cả
@@ -179,15 +189,15 @@ export const WalletView: React.FC = () => {
                   <td className="py-3 font-semibold text-slate-900">
                     Chuyến #FT202609180023
                     <span className="flex items-center gap-1 text-[10px] font-normal text-slate-400">
-                      <span>Hải Phòng</span>
+                      <span>Hưng Yên</span>
                       <ArrowRight className="w-2.5 h-2.5 inline text-slate-400" />
-                      <span>Hà Nội (8 tấn máy móc)</span>
+                      <span>Cảng Đình Vũ HP (Cont 40ft than 26T)</span>
                     </span>
                   </td>
-                  <td className="py-3 text-right font-extrabold text-blue-600">3.500.000đ</td>
+                  <td className="py-3 text-right font-extrabold text-blue-600">5.800.000đ</td>
                   <td className="py-3 text-right">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
-                      {isDriver ? "Đã nhận" : "Đã giải ngân"}
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                      Đang ký quỹ Escrow
                     </span>
                   </td>
                 </tr>
@@ -197,15 +207,15 @@ export const WalletView: React.FC = () => {
                   <td className="py-3 font-semibold text-slate-900">
                     Chuyến #FT202609170018
                     <span className="flex items-center gap-1 text-[10px] font-normal text-slate-400">
-                      <span>Bắc Ninh</span>
+                      <span>Cảng Hải Phòng</span>
                       <ArrowRight className="w-2.5 h-2.5 inline text-slate-400" />
-                      <span>Hải Phòng (12 tấn thép)</span>
+                      <span>Chân cầu Kiền (Thép cuộn 22T)</span>
                     </span>
                   </td>
-                  <td className="py-3 text-right font-extrabold text-blue-600">4.200.000đ</td>
+                  <td className="py-3 text-right font-extrabold text-blue-600">5.200.000đ</td>
                   <td className="py-3 text-right">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
-                      {isDriver ? "Đã nhận" : "Đã giải ngân"}
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                      Đang ký quỹ Escrow
                     </span>
                   </td>
                 </tr>
@@ -215,15 +225,15 @@ export const WalletView: React.FC = () => {
                   <td className="py-3 font-semibold text-slate-900">
                     Chuyến #FT202609160012
                     <span className="flex items-center gap-1 text-[10px] font-normal text-slate-400">
-                      <span>Quảng Ninh</span>
+                      <span>Hưng Yên</span>
                       <ArrowRight className="w-2.5 h-2.5 inline text-slate-400" />
-                      <span>Hải Phòng (5 tấn)</span>
+                      <span>Cảng Lạch Huyện (Cont lạnh tôm 25T)</span>
                     </span>
                   </td>
-                  <td className="py-3 text-right font-extrabold text-blue-600">2.100.000đ</td>
+                  <td className="py-3 text-right font-extrabold text-blue-600">6.500.000đ</td>
                   <td className="py-3 text-right">
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">
-                      {isDriver ? "Đã nhận" : "Đã giải ngân"}
+                      {isDriver ? "Đã nhận cước" : "Đã giải ngân"}
                     </span>
                   </td>
                 </tr>

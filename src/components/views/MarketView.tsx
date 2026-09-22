@@ -31,12 +31,13 @@ import {
 } from "lucide-react";
 
 export const MarketView: React.FC = () => {
-  const { orders, setSelectedOrder, setActiveTab, selectedOrder } = useApp();
+  const { orders, setSelectedOrder, setActiveTab, selectedOrder, role } = useApp();
 
-  const [fromCity, setFromCity] = useState("Hải Phòng");
-  const [toCity, setToCity] = useState("Hà Nội");
+  const isShipper = role === "SHIPPER";
+  const [fromCity, setFromCity] = useState("");
+  const [toCity, setToCity] = useState("");
   const [filterType, setFilterType] = useState<"ALL" | "AI_MATCHED" | "URGENT">("ALL");
-  const [weightLimit, setWeightLimit] = useState(15);
+  const [weightLimit, setWeightLimit] = useState(35);
   const [showMiniMap, setShowMiniMap] = useState(true);
   const [hoveredOrderId, setHoveredOrderId] = useState<string | null>(null);
   
@@ -63,14 +64,21 @@ export const MarketView: React.FC = () => {
     <div className="space-y-6 pb-12">
       {/* 1. Top Search Filter Bar matching image1.png */}
       <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <Search className="w-5 h-5 text-blue-600" />
-            Tìm chuyến hàng (Sàn kết nối vận tải hai chiều)
-          </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <Search className="w-5 h-5 text-blue-600" />
+              {isShipper ? "Sàn Xe Về Rỗng & Đội Xe Đối Tác" : "Tìm chuyến hàng (Sàn kết nối vận tải hai chiều)"}
+            </h2>
+            <p className="text-xs text-slate-500">
+              {isShipper
+                ? "Kết nối trực tiếp xe đầu kéo container / xe chuyên dụng chiều về rỗng để tối ưu 20-30% cước"
+                : "Tìm chuyến hàng phù hợp tải trọng xe đầu kéo và xe tải nặng của bạn"}
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setFilterType("AI_MATCHED")}
+              onClick={() => setFilterType(filterType === "AI_MATCHED" ? "ALL" : "AI_MATCHED")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 filterType === "AI_MATCHED"
                   ? "bg-blue-600 text-white shadow-sm"
@@ -78,10 +86,10 @@ export const MarketView: React.FC = () => {
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              Đề xuất xe về rỗng (Tiết kiệm 25%)
+              {isShipper ? "Xe về rỗng trợ giá (-25%)" : "Đề xuất xe về rỗng (Tiết kiệm 25%)"}
             </button>
             <button
-              onClick={() => setFilterType("URGENT")}
+              onClick={() => setFilterType(filterType === "URGENT" ? "ALL" : "URGENT")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 filterType === "URGENT"
                   ? "bg-red-600 text-white shadow-sm"
@@ -569,7 +577,7 @@ export const MarketView: React.FC = () => {
                           }}
                           className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
                         >
-                          Nhận đơn ngay
+                          {isShipper ? "Xem chi tiết & Ghép xe" : "Nhận đơn ngay"}
                           <ChevronRight className="w-3.5 h-3.5" />
                         </button>
                       </div>
