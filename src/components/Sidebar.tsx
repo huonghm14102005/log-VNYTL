@@ -33,26 +33,25 @@ export const Sidebar: React.FC = () => {
   // 1. Menu Tài Xế (Driver)
   const driverNavItems: NavItem[] = [
     { id: "dashboard", label: "Tổng quan Tài xế", icon: DashboardRoundedIcon },
-    { id: "market", label: "Tìm nguồn hàng", icon: SearchRoundedIcon, badge: "MỚI", badgeColor: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" },
+    { id: "market", label: "Tìm đơn", icon: SearchRoundedIcon, badge: "MỚI", badgeColor: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" },
     { id: "my-orders", label: "Chuyến của tôi", icon: LocalShippingRoundedIcon },
-    { id: "map", label: "Bản đồ Live GPS", icon: LocationOnRoundedIcon, badge: "LIVE", badgeColor: "bg-blue-500/20 text-blue-400 border border-blue-500/30" },
+    { id: "map", label: "Bản đồ hành trình", icon: LocationOnRoundedIcon, badge: "TRỰC TIẾP", badgeColor: "bg-blue-500/20 text-blue-400 border border-blue-500/30" },
     { id: "wallet", label: "Thu nhập & Ví cọc", icon: AccountBalanceWalletRoundedIcon },
-    { id: "profile", label: "Hồ sơ & Xe tải", icon: PersonRoundedIcon },
+    { id: "profile", label: "Hồ sơ", icon: PersonRoundedIcon },
     { id: "services", label: "Trạm dừng & Dịch vụ", icon: SupportAgentRoundedIcon },
-    { id: "settings", label: "Cài đặt ứng dụng", icon: SettingsRoundedIcon },
+    { id: "settings", label: "Cài đặt tài khoản", icon: SettingsRoundedIcon },
   ];
 
   // 2. Menu Chủ Hàng (Shipper)
   const shipperNavItems: NavItem[] = [
     { id: "dashboard", label: "Tổng quan Chủ hàng", icon: DashboardRoundedIcon },
-    { id: "create-order", label: "+ Đăng đơn hàng mới", icon: AddCircleOutlineRoundedIcon, highlight: true },
+    { id: "create-order", label: "Đăng đơn hàng mới", icon: AddCircleOutlineRoundedIcon, highlight: true },
     { id: "my-orders", label: "Đơn hàng đã đăng", icon: Inventory2RoundedIcon },
-    { id: "market", label: "Chợ xe về rỗng", icon: LocalShippingRoundedIcon, badge: "-25%", badgeColor: "bg-amber-500/20 text-amber-400 border border-amber-500/30" },
+    { id: "market", label: "Xe về rỗng", icon: LocalShippingRoundedIcon },
     { id: "map", label: "Theo dõi hành trình", icon: LocationOnRoundedIcon },
     { id: "wallet", label: "Ví & Ký quỹ Escrow", icon: AccountBalanceWalletRoundedIcon },
     { id: "profile", label: "Hồ sơ Doanh nghiệp", icon: PersonRoundedIcon },
-    { id: "services", label: "Dịch vụ & Bảo hiểm", icon: SupportAgentRoundedIcon },
-    { id: "settings", label: "Cài đặt ứng dụng", icon: SettingsRoundedIcon },
+    { id: "settings", label: "Cài đặt tài khoản", icon: SettingsRoundedIcon },
   ];
 
   // 3. Menu Quản Trị Sàn (Admin)

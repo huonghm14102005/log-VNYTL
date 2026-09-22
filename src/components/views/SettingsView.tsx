@@ -14,7 +14,7 @@ export const SettingsView: React.FC = () => {
   return (
     <div className="space-y-6 pb-12 max-w-3xl mx-auto">
       <div>
-        <h2 className="text-xl font-bold text-slate-800">Cài đặt ứng dụng</h2>
+        <h2 className="text-xl font-bold text-slate-800">Cài đặt tài khoản</h2>
         <p className="text-xs text-slate-500">Tùy chỉnh thông báo, bảo mật tài khoản và quy chế dịch vụ</p>
       </div>
 

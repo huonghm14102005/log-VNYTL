@@ -133,10 +133,34 @@ export const OrderDetailView: React.FC = () => {
 
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center gap-1.5">
-                  <Truck className="w-4 h-4 text-slate-400" /> Loại xe:
+                  <Package className="w-4 h-4 text-slate-400" /> Thể tích / Số khối:
+                </span>
+                <span className="font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
+                  {order.cargoVolumeCbm || 18} m³ (CBM)
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-slate-400" /> Kích thước (D×R×C):
+                </span>
+                <span className="font-semibold text-slate-800">
+                  {order.cargoDimensions || "4.5 x 2.2 x 2.0 m"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 flex items-center gap-1.5">
+                  <Truck className="w-4 h-4 text-slate-400" /> Loại xe yêu cầu:
                 </span>
                 <span className="font-bold text-slate-800">{order.vehicleTypeRequired}</span>
               </div>
+
+              {order.driverNotes && (
+                <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-[11px] leading-relaxed">
+                  <strong>Lưu ý từ chủ hàng:</strong> {order.driverNotes}
+                </div>
+              )}
 
               <div className="flex items-center justify-between">
                 <span className="text-slate-500 flex items-center gap-1.5">
@@ -222,7 +246,7 @@ export const OrderDetailView: React.FC = () => {
           </div>
         </div>
 
-        {/* Action Buttons matching image1.png */}
+        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-100">
           <button
             onClick={() => setActiveTab("chat")}
@@ -236,13 +260,19 @@ export const OrderDetailView: React.FC = () => {
           {isDriver && (
             <>
               {order.driverDeposited ? (
-                <button
-                  disabled
-                  className="w-full sm:w-auto px-8 py-3 rounded-xl bg-emerald-600 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-default"
-                >
-                  <CheckCircle2 className="w-4 h-4" />
-                  Bạn đã khóa cọc đơn này
-                </button>
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <span className="px-4 py-3 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center gap-1.5 border border-emerald-300">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    Đã nhận đơn hàng (Đã khóa cọc)
+                  </span>
+                  <button
+                    onClick={() => setActiveTab("map")}
+                    className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md flex items-center gap-1.5 transition-all"
+                  >
+                    <span>Vào bản đồ chạy chuyến</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
               ) : driver.kycStatus !== "VERIFIED" ? (
                 <button
                   onClick={() => setShowKycModal(true)}
@@ -258,7 +288,7 @@ export const OrderDetailView: React.FC = () => {
                   className="w-full sm:w-auto px-8 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2"
                 >
                   <Lock className="w-4 h-4" />
-                  Nhận chuyến & Khóa cọc ({formatVND(order.requiredDeposit)})
+                  Nhận đơn hàng & Khóa cọc ({formatVND(order.requiredDeposit)})
                 </button>
               )}
             </>

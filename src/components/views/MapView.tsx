@@ -50,14 +50,14 @@ export const MapView: React.FC = () => {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Header bar matching image1.png */}
+      {/* Header bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
             <Navigation className="w-5 h-5 text-blue-600" />
-            Bản đồ hành trình thời gian thực (GPS Live Tracking)
+            Bản đồ giám sát hành trình thời gian thực
           </h2>
-          <p className="text-xs text-slate-500">Giám sát xe tải trên hành lang cao tốc Hà Nội - Hải Phòng</p>
+          <p className="text-xs text-slate-500">Giám sát lộ trình xe tải trên hành lang cao tốc Hà Nội - Hải Phòng</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ export const MapView: React.FC = () => {
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-all animate-pulse"
             >
               <Camera className="w-3.5 h-3.5" />
-              Nộp ảnh e-POD & Chữ ký
+              Nộp ảnh biên bản giao hàng
             </button>
           )}
         </div>

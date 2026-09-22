@@ -66,6 +66,12 @@ export interface User {
   role: UserRole;
   avatarUrl?: string;
   companyName?: string;
+  taxCode?: string;
+  industry?: string;
+  foundedDate?: string;
+  companyAddress?: string;
+  position?: string;
+  isIndividual?: boolean;
   rating: number;
   totalTrips: number;
   completedRate: number;
@@ -85,6 +91,7 @@ export interface Vehicle {
   dimensions: string; // e.g. "6.2 x 2.3 x 2.5 m"
   photoUrl?: string;
   isVerified: boolean;
+  isDefault?: boolean;
 }
 
 export interface Order {
@@ -113,6 +120,9 @@ export interface Order {
   cargoName: string;
   cargoType: string;
   cargoWeightKg: number;
+  cargoVolumeCbm?: number; // Số khối m3
+  cargoDimensions?: string; // Dài x Rộng x Cao (m)
+  cargoPhotoUrl?: string; // Ảnh hàng hóa
   vehicleTypeRequired: string;
   
   declaredValue: number;
@@ -130,6 +140,10 @@ export interface Order {
   matchReason?: string;
   isReturnTripMatch?: boolean;
   specialNotes?: string;
+  driverNotes?: string; // Lưu ý cho tài xế
+  extraServices?: string[]; // Yêu cầu bổ sung: bốc xếp, hóa đơn GTGT
+  voucherCode?: string;
+  discountAmount?: number;
 
   escrowDeadlineMinutes?: number;
   isEscrowPaid?: boolean;

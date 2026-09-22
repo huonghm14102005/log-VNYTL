@@ -11,8 +11,60 @@ import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 
 export const Header: React.FC = () => {
   const { role, setRole, driver, shipper, setActiveTab } = useApp();
+  const [showNotifications, setShowNotifications] = React.useState(false);
 
   const currentUser = role === "DRIVER" ? driver : shipper;
+
+  const mockCaseNotifications = [
+    {
+      id: "notif-1",
+      title: "Giải ngân cước Escrow hoàn tất",
+      desc: "Chủ hàng đã duyệt ảnh giao nhận e-POD đơn #FT202609180023. Hệ thống đã giải ngân 3.500.000đ và hoàn cọc 500.000đ vào ví tài xế.",
+      time: "14:05 - Hôm nay",
+      type: "success",
+      badge: "Hoàn tất",
+    },
+    {
+      id: "notif-2",
+      title: "Giao hàng thành công - Đã nộp e-POD",
+      desc: "Xe 29H-123.45 đã giao đủ 8 tấn máy móc tại KCN Thăng Long, Hà Nội. Đã đính kèm ảnh biên bản bàn giao kèm định vị.",
+      time: "13:50 - Hôm nay",
+      type: "info",
+      badge: "Đã giao",
+    },
+    {
+      id: "notif-3",
+      title: "Hàng đang vận chuyển trên hành lang QL5",
+      desc: "Tài xế Nguyễn Văn A đã rời Cảng Đình Vũ (Hải Phòng), tốc độ 65km/h. Dự kiến tới Đông Anh sau 2 giờ 15 phút.",
+      time: "09:00 - Hôm nay",
+      type: "info",
+      badge: "Đang chạy",
+    },
+    {
+      id: "notif-4",
+      title: "Ký quỹ cước Escrow thành công",
+      desc: "Cước vận chuyển 3.500.000đ đã được khóa bảo đảm trong Escrow. Hệ thống đã mở Số điện thoại liên hệ trực tiếp cho 2 bên.",
+      time: "08:25 - Hôm nay",
+      type: "escrow",
+      badge: "Escrow Khóa",
+    },
+    {
+      id: "notif-5",
+      title: "Tài xế đã khóa cọc trách nhiệm 10%",
+      desc: "Tài xế Nguyễn Văn A đã đóng băng 500.000đ tiền cọc từ Ví cọc để nhận chuyến #FT202609180023.",
+      time: "08:15 - Hôm nay",
+      type: "escrow",
+      badge: "Đã cọc",
+    },
+    {
+      id: "notif-6",
+      title: "Ghép xe về rỗng thành công (-25% cước)",
+      desc: "Đơn hàng máy móc 8 tấn Cảng Đình Vũ → Hà Nội đã được thuật toán AI kết nối với xe thùng kín 10 tấn chiều về rỗng.",
+      time: "08:02 - Hôm nay",
+      type: "match",
+      badge: "Khớp AI",
+    },
+  ];
 
   return (
     <header className="h-16 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
@@ -76,12 +128,68 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Right User & Notification Controls */}
-      <div className="flex items-center gap-3">
-        {/* Notification Bell */}
-        <button className="relative p-2 rounded-xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all">
-          <NotificationsRoundedIcon className="!w-5 !h-5" />
-          <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
-        </button>
+      <div className="flex items-center gap-3 relative">
+        {/* Notification Bell with Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setShowNotifications(!showNotifications)}
+            className={`relative p-2 rounded-xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all ${
+              showNotifications ? "bg-slate-100 text-blue-600" : ""
+            }`}
+            title="Xem thông báo tiến trình đơn hàng"
+          >
+            <NotificationsRoundedIcon className="!w-5 !h-5" />
+            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white animate-pulse"></span>
+          </button>
+
+          {/* Notification Case Popup */}
+          {showNotifications && (
+            <div className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-xl border border-slate-200 py-3 z-50 animate-fadeIn">
+              <div className="px-4 pb-2.5 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-bold text-slate-900">Thông báo hệ thống</h4>
+                  <p className="text-[11px] text-slate-400">Tiến trình Case mẫu: Đơn #FT202609180023</p>
+                </div>
+                <span className="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full border border-blue-100">
+                  6 mốc sự kiện
+                </span>
+              </div>
+
+              <div className="max-h-[380px] overflow-y-auto divide-y divide-slate-50 px-2">
+                {mockCaseNotifications.map((n) => (
+                  <div key={n.id} className="p-2.5 hover:bg-slate-50 rounded-xl transition-colors space-y-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-slate-800 leading-tight">{n.title}</span>
+                      <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase shrink-0 ${
+                        n.type === "success"
+                          ? "bg-emerald-100 text-emerald-700"
+                          : n.type === "escrow"
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-amber-100 text-amber-800"
+                      }`}>
+                        {n.badge}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">{n.desc}</p>
+                    <p className="text-[10px] text-slate-400 font-medium">{n.time}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-2 px-3 border-t border-slate-100 text-center">
+                <button
+                  onClick={() => {
+                    setShowNotifications(false);
+                    setActiveTab("my-orders");
+                  }}
+                  className="text-xs font-bold text-blue-600 hover:underline"
+                >
+                  Xem chi tiết đơn hàng trong chuyến của tôi →
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* User Card matching image1.png */}
         <div className="flex items-center gap-3 pl-3 border-l border-slate-200">

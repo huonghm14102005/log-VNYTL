@@ -60,12 +60,12 @@ export const DashboardView: React.FC = () => {
           )}
         </div>
 
-        {/* Decorative truck graphic */}
-        <div className="shrink-0 flex items-center justify-center p-4 bg-white/10 rounded-2xl backdrop-blur-xs border border-white/20">
+        {/* Decorative truck graphic (Đổi hình xe đầu bằng, chéo) */}
+        <div className="shrink-0 flex items-center justify-center p-3 bg-white/10 rounded-2xl backdrop-blur-xs border border-white/20">
           <img
-            src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=400&auto=format&fit=crop&q=80"
-            alt="Truck"
-            className="w-48 h-28 object-cover rounded-xl shadow-md"
+            src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=400&auto=format&fit=crop&q=80"
+            alt="Flat Cab Modern Truck"
+            className="w-52 h-28 object-cover rounded-xl shadow-md"
           />
         </div>
       </div>
@@ -185,20 +185,20 @@ export const DashboardView: React.FC = () => {
         </div>
       )}
 
-      {/* 2. 4 KPI Stat Cards matching image1.png */}
+      {/* 2. 4 KPI Stat Cards (Đổi sang Số chuyến trong tháng và Chi phí vận tải tháng) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1 */}
+        {/* Card 1: Số chuyến trong tháng */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
-          <p className="text-xs font-semibold text-slate-500 mb-1">Chuyến hôm nay</p>
+          <p className="text-xs font-semibold text-slate-500 mb-1">Số chuyến trong tháng</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-2xl font-extrabold text-slate-800">5</h3>
+            <h3 className="text-2xl font-extrabold text-slate-800">28</h3>
             <span className="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
-              <TrendingUp className="w-3.5 h-3.5" /> +2 so với hôm qua
+              <TrendingUp className="w-3.5 h-3.5" /> +4 so với tháng trước
             </span>
           </div>
         </div>
 
-        {/* Card 2 */}
+        {/* Card 2: Đang vận chuyển */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">Đang vận chuyển</p>
           <div className="flex items-baseline justify-between">
@@ -209,34 +209,35 @@ export const DashboardView: React.FC = () => {
           </div>
         </div>
 
-        {/* Card 3 */}
+        {/* Card 3: Đã hoàn thành */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">Đã hoàn thành</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-2xl font-extrabold text-slate-800">3</h3>
+            <h3 className="text-2xl font-extrabold text-slate-800">26</h3>
             <span className="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
               <PackageCheck className="w-3.5 h-3.5" /> 100% đúng hạn
             </span>
           </div>
         </div>
 
-        {/* Card 4 */}
+        {/* Card 4: Doanh thu / Chi phí vận tải tháng */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">
-            {isDriver ? "Thu nhập hôm nay" : "Chi phí vận tải tuần này"}
+            {isDriver ? "Thu nhập tháng này" : "Chi phí vận tải tháng"}
           </p>
           <div className="flex items-baseline justify-between">
             <h3 className="text-2xl font-extrabold text-emerald-600">
-              {isDriver ? "8.500.000đ" : "12.800.000đ"}
+              {isDriver ? "48.500.000đ" : "68.500.000đ"}
             </h3>
             <span className="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
-              <ArrowUpRight className="w-3.5 h-3.5" /> + 1.200.000đ
+              <ArrowUpRight className="w-3.5 h-3.5" />
+              {isDriver ? "+ 15%" : "Tiết kiệm 15.2tr"}
             </span>
           </div>
         </div>
       </div>
 
-      {/* 3. Main Split Section matching image1.png */}
+      {/* 3. Main Split Section: Giao diện chi tiết theo vai trò */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Chuyến hàng đang chạy (7 Cols) */}
         <div className="lg:col-span-7 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
@@ -244,13 +245,13 @@ export const DashboardView: React.FC = () => {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
                 <Truck className="w-5 h-5 text-blue-600" />
-                Chuyến hàng đang chạy
+                {isDriver ? "Chuyến hàng đang phụ trách" : "Đơn hàng của bạn đang vận chuyển"}
               </h3>
               <button
                 onClick={() => setActiveTab("my-orders")}
                 className="text-xs font-semibold text-blue-600 hover:text-blue-700"
               >
-                Xem tất cả
+                Xem tất cả đơn
               </button>
             </div>
 
@@ -275,10 +276,10 @@ export const DashboardView: React.FC = () => {
                         </span>
                       </h4>
                       <p className="text-xs text-slate-500 mt-0.5">
-                        {order.cargoName} · {order.cargoWeightKg / 1000} tấn
+                        {order.cargoName} · {order.cargoWeightKg / 1000} tấn {order.cargoVolumeCbm ? `· ${order.cargoVolumeCbm} m³` : ""}
                       </p>
                       <p className="text-xs font-semibold text-emerald-600 mt-1">
-                        Cước: {formatVND(order.freightPrice)}
+                        Cước: {formatVND(order.freightPrice)} {order.driverName ? `• Tài xế: ${order.driverName} (${order.driverPlateNumber || "29H-123.45"})` : ""}
                       </p>
                     </div>
                   </div>
@@ -290,7 +291,7 @@ export const DashboardView: React.FC = () => {
                     <span className="text-xs text-slate-500 font-medium">
                       {order.trackingProgress
                         ? `Còn ${order.distanceKm - order.trackingProgress.completedKm} km`
-                        : "Còn 2 giờ"}
+                        : "Còn 1 giờ 30 phút"}
                     </span>
                     <button
                       onClick={() => {
@@ -299,7 +300,7 @@ export const DashboardView: React.FC = () => {
                       }}
                       className="text-xs font-bold text-blue-600 hover:underline mt-1 flex items-center gap-1"
                     >
-                      <span>Bản đồ trực tiếp</span>
+                      <span>Theo dõi hành trình</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -310,37 +311,35 @@ export const DashboardView: React.FC = () => {
 
           <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
             <span className="flex items-center gap-1.5 text-emerald-600 font-semibold">
-              <ShieldCheck className="w-4 h-4" /> Ký quỹ Escrow bảo vệ an toàn 100%
+              <ShieldCheck className="w-4 h-4" /> Ký quỹ Escrow bảo đảm an toàn 100%
             </span>
-            <span>Cập nhật GPS: Vừa xong</span>
+            <span>Cập nhật vị trí: Vừa xong</span>
           </div>
         </div>
 
-        {/* Right Column: Doanh thu tuần này with Bar Chart matching image1.png (5 Cols) */}
+        {/* Right Column: Biểu đồ & Đề xuất tối ưu (5 Cols) */}
         <div className="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-base font-bold text-slate-800">
-                {isDriver ? "Doanh thu tuần này" : "Ngân sách tuần này"}
+                {isDriver ? "Thu nhập theo tuần" : "Chi phí vận tải tháng"}
               </h3>
               <span className="text-xs font-bold text-emerald-600 flex items-center gap-0.5">
-                <ArrowUpRight className="w-3.5 h-3.5" /> + 12% so với tuần trước
+                <ArrowUpRight className="w-3.5 h-3.5" />
+                {isDriver ? "+ 12% hiệu suất" : "Tiết kiệm 22% so với xe chiều đi"}
               </span>
             </div>
-            <p className="text-2xl font-extrabold text-slate-900 mb-6">
-              {isDriver ? "36.500.000đ" : "28.900.000đ"}
+            <p className="text-2xl font-extrabold text-slate-900 mb-4">
+              {isDriver ? "36.500.000đ" : "68.500.000đ"}
             </p>
 
             {/* Stylized CSS Bar Chart matching Screen 1 in image1.png */}
             <div className="h-44 flex items-end justify-between gap-3 px-2 pt-4 border-b border-slate-200">
               {[
-                { day: "T2", height: "45%", value: "4.2tr" },
-                { day: "T3", height: "65%", value: "6.5tr" },
-                { day: "T4", height: "50%", value: "5.0tr" },
-                { day: "T5", height: "80%", value: "8.1tr" },
-                { day: "T6", height: "95%", value: "9.5tr", active: true },
-                { day: "T7", height: "35%", value: "3.2tr" },
-                { day: "CN", height: "20%", value: "1.8tr" },
+                { day: "Tuần 1", height: "45%", value: "15.2tr" },
+                { day: "Tuần 2", height: "65%", value: "22.5tr" },
+                { day: "Tuần 3", height: "85%", value: "28.1tr", active: true },
+                { day: "Tuần 4", height: "50%", value: "17.7tr" },
               ].map((bar, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-2 group relative">
                   {/* Tooltip on hover */}
@@ -361,13 +360,33 @@ export const DashboardView: React.FC = () => {
             </div>
           </div>
 
-          <button
-            onClick={() => setActiveTab("wallet")}
-            className="w-full mt-4 py-2.5 text-center text-xs font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-all flex items-center justify-center gap-1.5"
-          >
-            <span>Xem bảng đối soát dòng tiền Escrow</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="pt-3">
+            {!isDriver ? (
+              <div className="p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-xs text-amber-900 space-y-1">
+                <p className="font-bold flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-amber-600" />
+                  Gợi ý xe tải về rỗng chiều Hải Phòng → Hà Nội:
+                </p>
+                <p className="text-[11px] text-amber-800">
+                  Có 3 xe tải 8-15 tấn đang trả hàng tại Đình Vũ và tìm chuyến quay đầu về Hà Nội với cước giảm 25%.
+                </p>
+                <button
+                  onClick={() => setActiveTab("market")}
+                  className="mt-1 text-blue-700 font-bold hover:underline inline-flex items-center gap-1"
+                >
+                  Xem danh sách xe về rỗng ngay →
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setActiveTab("wallet")}
+                className="w-full py-2.5 text-center text-xs font-bold text-blue-600 hover:bg-blue-50 rounded-xl transition-all flex items-center justify-center gap-1.5"
+              >
+                <span>Xem bảng đối soát dòng tiền Escrow</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

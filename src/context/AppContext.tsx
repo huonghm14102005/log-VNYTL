@@ -1,8 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import { Order, ReturnTrip, User, UserRole, Wallet, ChatMessage, DriverKycApplication, KycStatus } from "@/types";
-import { initialDriver, initialShipper, initialOrders, initialReturnTrips, initialWallet, initialPendingKycApplication } from "@/lib/data";
+import { Order, ReturnTrip, User, UserRole, Vehicle, Wallet, ChatMessage, DriverKycApplication, KycStatus } from "@/types";
+import { initialDriver, initialShipper, initialOrders, initialReturnTrips, initialWallet, initialPendingKycApplication, initialDriverVehicles } from "@/lib/data";
 import { sanitizeChatMessage } from "@/lib/anti-leakage";
 
 interface AppContextType {
@@ -11,6 +11,10 @@ interface AppContextType {
   driver: User;
   setDriver: React.Dispatch<React.SetStateAction<User>>;
   shipper: User;
+  setShipper: React.Dispatch<React.SetStateAction<User>>;
+  driverVehicles: Vehicle[];
+  addDriverVehicle: (veh: Partial<Vehicle>) => void;
+  setDefaultVehicle: (id: string) => void;
   orders: Order[];
   returnTrips: ReturnTrip[];
   wallet: Wallet;
@@ -49,6 +53,8 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [role, setRole] = useState<UserRole>("DRIVER");
   const [driver, setDriver] = useState<User>(initialDriver);
+  const [shipper, setShipper] = useState<User>(initialShipper);
+  const [driverVehicles, setDriverVehicles] = useState<Vehicle[]>(initialDriverVehicles);
   const [kycApplications, setKycApplications] = useState<DriverKycApplication[]>([initialPendingKycApplication]);
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [orders, setOrders] = useState<Order[]>(initialOrders);
@@ -392,6 +398,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast(`Đã chuyển trạng thái tài xế: ${status === "VERIFIED" ? "ĐÃ DUYỆT (Nhận chuyến bình thường)" : status === "PENDING" ? "CHỜ DUYỆT (Khóa nhận chuyến)" : "CHƯA NỘP HỒ SƠ"}`);
   };
 
+  const addDriverVehicle = (veh: Partial<Vehicle>) => {
+    const newVeh: Vehicle = {
+      id: `veh-${Date.now()}`,
+      driverId: driver.id,
+      plateNumber: veh.plateNumber || "29C-112.23",
+      vehicleType: veh.vehicleType || "Xe tải thùng kín",
+      brand: veh.brand || "Hino 500 Series",
+      maxPayloadKg: veh.maxPayloadKg || 8000,
+      dimensions: veh.dimensions || "6.0 x 2.2 x 2.4 m",
+      isVerified: true,
+      isDefault: false,
+    };
+    setDriverVehicles((prev) => [...prev, newVeh]);
+    showToast(`Đã thêm xe ${newVeh.plateNumber} vào hồ sơ thành công!`);
+  };
+
+  const setDefaultVehicle = (id: string) => {
+    setDriverVehicles((prev) =>
+      prev.map((v) => ({
+        ...v,
+        isDefault: v.id === id,
+      }))
+    );
+    showToast("Đã thiết lập xe hoạt động chính!");
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -399,7 +431,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setRole,
         driver,
         setDriver,
-        shipper: initialShipper,
+        shipper,
+        setShipper,
+        driverVehicles,
+        addDriverVehicle,
+        setDefaultVehicle,
         orders,
         returnTrips,
         wallet,
