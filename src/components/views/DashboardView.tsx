@@ -28,9 +28,26 @@ export const DashboardView: React.FC = () => {
   const isDriver = role === "DRIVER";
   const currentUser = isDriver ? driver : shipper;
 
-  const activeOrders = orders.filter(
+  // 1. Phân loại chuyến đang chạy và đã hoàn thành
+  const runningOrders = orders.filter(
     (o) => o.status === "IN_TRANSIT" || o.status === "PICKING_UP" || o.status === "WAITING_ESCROW_PAYMENT"
   );
+  const completedOrders = orders.filter(
+    (o) => o.status === "DELIVERED" || o.status === "COMPLETED"
+  );
+
+  // Đảm bảo: tổng các đơn đã hoàn thành và đang chạy bằng tổng đơn tháng này (1 + 5 = 6)
+  const runningCount = runningOrders.length; // 1
+  const completedCount = completedOrders.length; // 5
+  const totalTripsCount = runningCount + completedCount; // 6 chuyến
+
+  // 2. Tính toán doanh thu & chi phí theo mức trung bình 5.5tr/đơn
+  const completedRevenue = completedOrders.reduce((sum, o) => sum + o.freightPrice, 0); // 27.500.000đ
+  const escrowAmount = runningOrders.reduce((sum, o) => sum + o.freightPrice, 0); // 5.500.000đ
+  const totalMonthlySpend = completedRevenue + escrowAmount; // 33.000.000đ (toàn bộ 6 đơn)
+  const driverNetIncome = Math.round(completedRevenue * 0.92); // 25.300.000đ (sau trừ 8% phí sàn)
+
+  const activeOrders = runningOrders;
 
   return (
     <div className="space-y-6 pb-12">
@@ -47,7 +64,7 @@ export const DashboardView: React.FC = () => {
           <p className="text-blue-100 text-sm leading-relaxed">
             {isDriver
               ? "Chúc bạn có những chuyến đi an toàn, tối ưu chi phí với các chuyến về rỗng!"
-              : "Hệ thống đã tự động quét và tìm thấy 2 xe đầu kéo cont 40ft & mooc sàn về rỗng giảm tới 25% cước!"}
+              : "Hệ thống đã tự động quét và tìm thấy xe đầu kéo cont 40ft & mooc sàn về rỗng giảm tới 25% cước!"}
           </p>
           {!isDriver && (
             <button
@@ -185,15 +202,15 @@ export const DashboardView: React.FC = () => {
         </div>
       )}
 
-      {/* 2. 4 KPI Stat Cards (Đổi sang Số chuyến trong tháng và Chi phí vận tải tháng) */}
+      {/* 2. 4 KPI Stat Cards (Đảm bảo: Đang chạy + Đã hoàn thành = Tổng số chuyến trong tháng) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Số chuyến trong tháng */}
+        {/* Card 1: Số chuyến trong tháng (Đang chạy + Đã hoàn thành = 1 + 5 = 6) */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">Số chuyến trong tháng</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-2xl font-extrabold text-slate-800">6</h3>
+            <h3 className="text-2xl font-extrabold text-slate-800">{totalTripsCount}</h3>
             <span className="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
-              <TrendingUp className="w-3.5 h-3.5" /> +1 so với tháng trước
+              <TrendingUp className="w-3.5 h-3.5" /> 6 chuyến / tháng
             </span>
           </div>
         </div>
@@ -202,9 +219,9 @@ export const DashboardView: React.FC = () => {
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">Đang vận chuyển</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-2xl font-extrabold text-blue-600">2</h3>
+            <h3 className="text-2xl font-extrabold text-blue-600">{runningCount}</h3>
             <span className="text-xs font-semibold text-blue-600 flex items-center gap-0.5">
-              <Clock className="w-3.5 h-3.5" /> 1 xe sắp tới nơi
+              <Clock className="w-3.5 h-3.5" /> {runningCount} xe đang di chuyển
             </span>
           </div>
         </div>
@@ -213,25 +230,25 @@ export const DashboardView: React.FC = () => {
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">Đã hoàn thành</p>
           <div className="flex items-baseline justify-between">
-            <h3 className="text-2xl font-extrabold text-slate-800">4</h3>
+            <h3 className="text-2xl font-extrabold text-slate-800">{completedCount}</h3>
             <span className="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
               <PackageCheck className="w-3.5 h-3.5" /> 100% đúng hạn
             </span>
           </div>
         </div>
 
-        {/* Card 4: Doanh thu / Chi phí vận tải tháng */}
+        {/* Card 4: Doanh thu / Chi phí vận tải tháng (Trung bình 5.5tr/đơn) */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs card-hover">
           <p className="text-xs font-semibold text-slate-500 mb-1">
             {isDriver ? "Thu nhập tháng này" : "Chi phí vận tải tháng"}
           </p>
           <div className="flex items-baseline justify-between">
             <h3 className="text-2xl font-extrabold text-emerald-600">
-              {isDriver ? "23.500.000đ" : "34.500.000đ"}
+              {isDriver ? formatVND(completedRevenue) : formatVND(totalMonthlySpend)}
             </h3>
             <span className="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">
               <ArrowUpRight className="w-3.5 h-3.5" />
-              {isDriver ? "+ 8%" : "Tiết kiệm 7.5tr"}
+              {isDriver ? "~5.5tr / đơn" : "Tiết kiệm 20%"}
             </span>
           </div>
         </div>
@@ -251,7 +268,7 @@ export const DashboardView: React.FC = () => {
                 onClick={() => setActiveTab("my-orders")}
                 className="text-xs font-semibold text-blue-600 hover:text-blue-700"
               >
-                Xem tất cả đơn
+                Xem tất cả ({totalTripsCount} đơn)
               </button>
             </div>
 
@@ -330,16 +347,16 @@ export const DashboardView: React.FC = () => {
               </span>
             </div>
             <p className="text-2xl font-extrabold text-slate-900 mb-4">
-              {isDriver ? "6.800.000đ" : "8.500.000đ"}
+              {isDriver ? "5.500.000đ" : "5.500.000đ"}
             </p>
 
             {/* Stylized CSS Bar Chart matching Screen 1 in image1.png */}
             <div className="h-44 flex items-end justify-between gap-3 px-2 pt-4 border-b border-slate-200">
               {[
-                { day: "Tuần 1", height: "55%", value: "5.5tr" },
-                { day: "Tuần 2", height: "65%", value: "5.8tr" },
-                { day: "Tuần 3", height: "85%", value: "6.8tr", active: true },
-                { day: "Tuần 4", height: "50%", value: "5.4tr" },
+                { day: "Tuần 1", height: "65%", value: "5.5tr" },
+                { day: "Tuần 2", height: "62%", value: "5.4tr" },
+                { day: "Tuần 3", height: "70%", value: "5.6tr", active: true },
+                { day: "Tuần 4", height: "65%", value: "5.5tr" },
               ].map((bar, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-2 group relative">
                   {/* Tooltip on hover */}
