@@ -85,7 +85,7 @@ export const ServicesView: React.FC = () => {
       <div className="rounded-2xl overflow-hidden relative border border-slate-200 shadow-md bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between">
         <div className="p-8 space-y-3 z-10 max-w-lg">
           <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-600 text-white inline-flex items-center gap-1.5">
-            <AutoAwesomeRoundedIcon className="!w-3.5 !h-3.5" /> Hệ sinh thái VYLT 2026
+            <AutoAwesomeRoundedIcon className="!w-3.5 !h-3.5" /> Hệ sinh thái TruckLoad
           </span>
           <h3 className="text-2xl font-extrabold tracking-tight">Truckers' Home</h3>
           <p className="text-slate-300 text-xs leading-relaxed">

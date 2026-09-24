@@ -20,7 +20,7 @@ export const DriverKycModal: React.FC<DriverKycModalProps> = ({ isOpen, onClose 
   const [formData, setFormData] = useState({
     driverName: driver.fullName || "Nguyễn Văn A",
     phone: driver.phoneNumber || "0988123456",
-    email: driver.email || "driver.vylt@gmail.com",
+    email: driver.email || "driver.truckload@gmail.com",
     idCardNumber: "001095018291",
     idCardIssuedDate: "2022-05-12",
     idCardFrontUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400",

@@ -56,7 +56,7 @@ export const DashboardView: React.FC = () => {
         <div className="space-y-2 z-10 max-w-xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-blue-100">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            Nền tảng vận tải kết nối thông minh VYLT 2026
+            Nền tảng vận tải kết nối thông minh TruckLoad
           </div>
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
             Xin chào, {currentUser.fullName}!

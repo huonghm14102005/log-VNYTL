@@ -45,7 +45,7 @@ export const CreateOrderView: React.FC = () => {
   const [baseFreightPrice, setBaseFreightPrice] = useState(5800000); // 5.8tr
   const [servicePackage, setServicePackage] = useState<"STANDARD" | "SUPERVISED" | "INSURED">("SUPERVISED");
   const [urgencyLevel, setUrgencyLevel] = useState<"NORMAL" | "URGENT" | "FLEXIBLE">("NORMAL");
-  const [voucherCode, setVoucherCode] = useState("VYLT2026");
+  const [voucherCode, setVoucherCode] = useState("TRUCKLOAD2026");
   const [isVoucherApplied, setIsVoucherApplied] = useState(true);
 
   // Áp dụng mẫu đơn hàng nhanh
@@ -155,7 +155,7 @@ export const CreateOrderView: React.FC = () => {
   };
 
   const handleApplyVoucher = (code: string) => {
-    if (code.toUpperCase() === "VYLT2026" || code.toUpperCase() === "CHAOBANMOI") {
+    if (code.toUpperCase() === "TRUCKLOAD2026" || code.toUpperCase() === "VYLT2026" || code.toUpperCase() === "CHAOBANMOI") {
       setIsVoucherApplied(true);
       setVoucherCode(code.toUpperCase());
     } else {
@@ -784,15 +784,15 @@ export const CreateOrderView: React.FC = () => {
                     type="text"
                     value={voucherCode}
                     onChange={(e) => handleApplyVoucher(e.target.value)}
-                    placeholder="Nhập mã VYLT2026..."
-                    className="uppercase bg-white border border-slate-300 px-2.5 py-1 rounded-lg text-xs font-bold w-28 focus:outline-none"
+                    placeholder="Nhập mã TRUCKLOAD2026..."
+                    className="uppercase bg-white border border-slate-300 px-2.5 py-1 rounded-lg text-xs font-bold w-36 focus:outline-none"
                   />
                   <button
                     type="button"
-                    onClick={() => handleApplyVoucher("VYLT2026")}
+                    onClick={() => handleApplyVoucher("TRUCKLOAD2026")}
                     className="text-[10px] text-blue-600 font-bold hover:underline"
                   >
-                    Dùng mã mẫu VYLT2026 (-200k)
+                    Dùng mã mẫu TRUCKLOAD2026 (-200k)
                   </button>
                 </div>
                 {isVoucherApplied && (
@@ -817,7 +817,7 @@ export const CreateOrderView: React.FC = () => {
             <div className="p-4 rounded-xl bg-emerald-50/80 border border-emerald-200 text-xs text-emerald-900 space-y-2">
               <div className="flex items-center gap-2 font-bold text-emerald-800 text-sm">
                 <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
-                <span>Chính sách Hoàn tiền & Bảo đảm Ký quỹ Escrow (VYLT 2026)</span>
+                <span>Chính sách Hoàn tiền & Bảo đảm Ký quỹ Escrow (TruckLoad)</span>
               </div>
               <ul className="list-disc pl-5 space-y-1 text-[11px] text-emerald-800 leading-relaxed">
                 <li>

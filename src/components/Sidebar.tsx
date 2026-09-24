@@ -77,9 +77,9 @@ export const Sidebar: React.FC = () => {
         </div>
         <div>
           <h1 className="text-white font-bold text-base tracking-tight flex items-center gap-1.5">
-            Full Truck
-            <span className="text-blue-400 font-extrabold text-xs px-1.5 py-0.5 rounded bg-blue-950/80 border border-blue-800">
-              VYLT
+            TruckLoad
+            <span className="text-blue-400 font-extrabold text-[10px] px-1.5 py-0.5 rounded bg-blue-950/80 border border-blue-800 tracking-wider">
+              PRO
             </span>
           </h1>
           <p className="text-xs text-slate-400 font-medium">Sàn Vận Tải Hai Chiều</p>

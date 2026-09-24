@@ -281,7 +281,7 @@ export const WalletView: React.FC = () => {
           <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-600 text-[11px] leading-relaxed flex items-start gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <div>
-              <strong>Quy chế Ký quỹ & Bảo đảm Escrow (VYLT 2026):</strong> Tiền cước được bảo vệ tuyệt đối trong tài khoản trung gian của Sàn. Trong trường hợp phát sinh tranh chấp hoặc khiếu nại chất lượng hàng hóa, tiền cước được tạm giữ tối đa <strong>7 ngày</strong> để Hội đồng đối soát xác minh trước khi giải ngân hoặc hoàn tiền 100%.
+              <strong>Quy chế Ký quỹ & Bảo đảm Escrow (TruckLoad):</strong> Tiền cước được bảo vệ tuyệt đối trong tài khoản trung gian của Sàn. Trong trường hợp phát sinh tranh chấp hoặc khiếu nại chất lượng hàng hóa, tiền cước được tạm giữ tối đa <strong>7 ngày</strong> để Hội đồng đối soát xác minh trước khi giải ngân hoặc hoàn tiền 100%.
             </div>
           </div>
         </div>

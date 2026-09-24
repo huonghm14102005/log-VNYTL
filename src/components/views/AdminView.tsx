@@ -329,7 +329,7 @@ export const AdminView: React.FC = () => {
 
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-2 leading-relaxed">
             <p>
-              🛡️ <strong>Chính sách Bảo vệ Tranh chấp:</strong> Toàn bộ giao dịch trên Sàn Full Truck VYLT 2026 được bảo hiểm bởi cơ chế <strong>Ký quỹ Escrow hai chiều</strong> kết hợp kiểm tra <strong>ảnh chụp nghiệm thu e-POD</strong> lúc nhận và giao hàng.
+              🛡️ <strong>Chính sách Bảo vệ Tranh chấp:</strong> Toàn bộ giao dịch trên Sàn TruckLoad được bảo hiểm bởi cơ chế <strong>Ký quỹ Escrow hai chiều</strong> kết hợp kiểm tra <strong>ảnh chụp nghiệm thu e-POD</strong> lúc nhận và giao hàng.
             </p>
             <p className="text-slate-500">
               Nếu xảy ra sự cố hỏng hóc hoặc chậm trễ ngoài mong muốn, Ban Quản trị Sàn sẽ đóng băng tiền cọc trong 72 giờ để đối soát camera hành trình và biên bản kiểm đếm song phương.

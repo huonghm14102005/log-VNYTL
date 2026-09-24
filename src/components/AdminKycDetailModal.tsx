@@ -45,7 +45,7 @@ export const AdminKycDetailModal: React.FC<AdminKycDetailModalProps> = ({
   const bankAccountNumber = application.bankAccountNumber || application.bankAccount || "9988776655";
   const bankAccountHolder = application.bankAccountHolder || driverName.toUpperCase();
   const phone = application.phone || "0988123456";
-  const email = application.email || "driver.vylt@gmail.com";
+  const email = application.email || "driver.truckload@gmail.com";
 
   const handleApprove = () => {
     approveDriverKyc(application.id);

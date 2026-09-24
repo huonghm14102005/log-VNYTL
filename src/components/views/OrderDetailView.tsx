@@ -237,7 +237,7 @@ export const OrderDetailView: React.FC = () => {
         <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-start gap-3">
           <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
           <div className="space-y-0.5">
-            <p className="font-bold">Cơ chế Bảo đảm Ký quỹ Escrow hai chiều (VYLT 2026):</p>
+            <p className="font-bold">Cơ chế Bảo đảm Ký quỹ Escrow hai chiều (TruckLoad):</p>
             <p className="text-emerald-700 leading-relaxed flex flex-wrap items-center gap-1">
               <span>Tài xế cọc 10% giá trị hàng ({formatVND(order.requiredDeposit)})</span>
               <ArrowRight className="w-3.5 h-3.5 inline text-emerald-800 shrink-0" />
